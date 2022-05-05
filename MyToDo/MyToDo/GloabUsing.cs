@@ -17,10 +17,14 @@ global using System.Windows.Media;
 global using System.Windows.Media.Imaging;
 global using System.Windows.Navigation;
 global using System.Windows.Shapes;
-
 global using MyToDo.ViewModels;
 global using MyToDo.Views;
 global using System.Reactive.Disposables;
 global using Splat;
 global using static Splat.Locator;
 global using System.Reflection;
+global using MyToDo.Common.Models;
+global using DynamicData.Binding;
+global using DynamicData;
+global using System.Collections.ObjectModel;
+global using System.Reactive.Linq;

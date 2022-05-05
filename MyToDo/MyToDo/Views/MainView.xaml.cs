@@ -1,41 +1,30 @@
-﻿using System.Reactive.Linq;
-
-namespace MyToDo.Views;
+﻿namespace MyToDo.Views;
 
 /// <summary>
 /// MainView.xaml 的交互逻辑
 /// </summary>
-public partial class MainView : Window, IViewFor<MainViewModel>
+public partial class MainView
 {
-    public static readonly DependencyProperty ViewModelProperty = DependencyProperty
-       .Register(nameof(ViewModel), typeof(MainViewModel), typeof(MainView));
-
     public MainView()
     {
         InitializeComponent();
         ViewModel = Current.GetService<MainViewModel>() ?? new MainViewModel();
         this.WhenActivated(d =>
         {
-            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
-            btnClose.Click += (o, e) => this.Close();
-            btnMin.Click += (o, e) => this.WindowState = WindowState.Minimized;
-            btnMax.Click += (o, e) => this.WindowState = this.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
-            titleBar.MouseDoubleClick += (o, e) => this.WindowState = this.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+            MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
+            btnClose.Click += (o, e) => Close();
+            btnMin.Click += (o, e) => WindowState = WindowState.Minimized;
+            btnMax.Click += (o, e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+            titleBar.MouseDoubleClick += (o, e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
             this.Events().MouseMove
                 .Where(e => e.LeftButton == MouseButtonState.Pressed)
-                .Subscribe(_ => this.DragMove());
+                .Subscribe(_ => DragMove());
+
+            this.OneWayBind(ViewModel, vm => vm.MenubarItems, v => v.menuItems.ItemsSource).DisposeWith(d);
+            this.OneWayBind(ViewModel, vm => vm.Router, v => v.mainContent.Router).DisposeWith(d);
+            this.Bind(ViewModel, vm => vm.MenuBarSelectItem, v => v.menuItems.SelectedItem).DisposeWith(d);
+            this.BindCommand(ViewModel, vm => vm.NaviBackCommand, v => v.btnNaviBack).DisposeWith(d);
         });
-    }
-
-    public MainViewModel ViewModel
-    {
-        get => (MainViewModel)GetValue(ViewModelProperty);
-        set => SetValue(ViewModelProperty, value);
-    }
-
-    object IViewFor.ViewModel
-    {
-        get => ViewModel;
-        set => ViewModel = (MainViewModel)value;
     }
 }

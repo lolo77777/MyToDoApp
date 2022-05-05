@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\头像2.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Images\头像2.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="4.5.0" />
     <PackageReference Include="ReactiveUI" Version="18.0.10" />
     <PackageReference Include="ReactiveUI.Events.WPF" Version="15.1.1" />
