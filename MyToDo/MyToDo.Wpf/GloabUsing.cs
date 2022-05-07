@@ -7,7 +7,7 @@ global using System.Threading.Tasks;
 global using ReactiveUI;
 global using ReactiveUI.Wpf;
 global using ReactiveUI.Fody.Helpers;
-
+global using MyToDo.Share.ViewShare;
 global using System.Windows;
 global using System.Windows.Controls;
 global using System.Windows.Data;

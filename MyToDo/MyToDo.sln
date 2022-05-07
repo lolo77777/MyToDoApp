@@ -7,9 +7,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyToDo.Wpf", "MyToDo.Wpf\My
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyToDo.MVVM", "MyToDo.MVVM\MyToDo.MVVM.csproj", "{B9BF4E4C-7486-4A78-9CAA-1643C9D2D359}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyToDo.Avalonia", "MyToDo.Avalonia\MyToDo.Avalonia.csproj", "{BEF0B9FE-810D-43A6-BA63-613FEACA10AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyToDo.Avalonia", "MyToDo.Avalonia\MyToDo.Avalonia.csproj", "{BEF0B9FE-810D-43A6-BA63-613FEACA10AF}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MyToDo.Share", "MyToDo.Share\MyToDo.Share.shproj", "{B0D8CF28-EBAD-49EB-B50E-B8DC50D8A8B7}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		MyToDo.Share\MyToDo.Share.projitems*{094a128b-bb72-49b9-bd62-cdac0d561f9a}*SharedItemsImports = 5
+		MyToDo.Share\MyToDo.Share.projitems*{b0d8cf28-ebad-49eb-b50e-b8dc50d8a8b7}*SharedItemsImports = 13
+		MyToDo.Share\MyToDo.Share.projitems*{bef0b9fe-810d-43a6-ba63-613feaca10af}*SharedItemsImports = 5
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

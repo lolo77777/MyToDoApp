@@ -5,7 +5,7 @@ global using System.Text;
 global using System.Threading.Tasks;
 
 global using ReactiveUI;
-
+global using MyToDo.Share.ViewShare;
 global using ReactiveUI.Fody.Helpers;
 
 global using System.Windows;

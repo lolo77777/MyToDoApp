@@ -2,8 +2,8 @@
 
 public class MainViewModel : ViewModelBase, IScreen
 {
-    public List<MenuBar> MenubarItems { get; set; } = new();
-    public RoutingState Router { get; } = new();
+    public ObservableCollection<MenuBar> MenubarItems { get; set; } = new();
+    [Reactive] public RoutingState Router { get; set; } = new();
     [Reactive] public MenuBar? MenuBarSelectItem { get; set; }
     public ICommand? NaviBackCommand { get; set; }
     public ICommand? NaviForwardCommand { get; set; }
@@ -16,10 +16,6 @@ public class MainViewModel : ViewModelBase, IScreen
             .WhereNotNull()
             .Select(item => Current.GetService<IRoutableViewModel>(item.ViewName))
             .WhereNotNull()
-            .Do(_ =>
-            {
-                var t = Router.NavigationStack;
-            })
             .Subscribe(vm => Router.Navigate.Execute(vm));
     }
 

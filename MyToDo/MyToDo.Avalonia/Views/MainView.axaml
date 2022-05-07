@@ -5,14 +5,191 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="MyToDo.Avalonia.Views.MainView"
 		xmlns:vm="clr-namespace:MyToDo.MVVM.ViewModels;assembly=MyToDo.MVVM"
+		xmlns:rxui="http://reactiveui.net"
+		xmlns:materialDesign="clr-namespace:Material.Styles;assembly=Material.Styles"
+		xmlns:dialogHost="clr-namespace:DialogHost;assembly=DialogHost.Avalonia"
+
+        xmlns:Icon="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         Icon="/Assets/avalonia-logo.ico"
 		FontFamily="微软雅黑"
-
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        ExtendClientAreaTitleBarHeightHint="-1"
+		Width="1280"
+        Height="768"
+		FontSize="13"
+		FontWeight="Regular"
+		WindowStartupLocation="CenterScreen"
         Title="MyToDo.Avalonia">
 
 	<Design.DataContext>
 		<vm:MainViewModel />
 	</Design.DataContext>
+	<!--<Window.Styles>
+		<Style  Selector="ListBoxItem">
+			<Setter Property="MinHeight" Value="40" />
+			<Setter Property="Template">
+				<ControlTemplate Selector="ListBoxItem">
+					<Grid>
+						<Border x:Name="borderHeader" />
+						<Border x:Name="border" />
+						<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsSelected" Value="True">
+							<Setter TargetName="borderHeader" Property="BorderThickness" Value="4,0,0,0" />
+							<Setter TargetName="borderHeader" Property="BorderBrush" Value="{DynamicResource PrimaryHueLightBrush}" />
+							<Setter TargetName="border" Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
+							<Setter TargetName="border" Property="Opacity" Value="0.2" />
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="border" Property="Background" Value="{DynamicResource PrimaryHueLightBrush}" />
+							<Setter TargetName="border" Property="Opacity" Value="0.2" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter>
+		</Style>
+	</Window.Styles>-->
+	<!--<dialogHost:DialogHost Identifier="MainDialogHost">
+	</dialogHost:DialogHost>-->
+	<materialDesign:NavigationDrawer LeftDrawerOpened="{Binding ElementName=NavDrawerSwitch, Path=IsChecked, Mode=TwoWay}">
+		<materialDesign:NavigationDrawer.LeftDrawerContent>
+			<DockPanel>
+				<StackPanel Margin="0,20" DockPanel.Dock="Top">
+					<Image
+						Width="50"
+						Height="50"
+						Source="/Assets/TA3.jpg">
+						<Image.Clip>
+							<EllipseGeometry
+								Center="25,25"
+								RadiusX="25"
+								RadiusY="25" />
+						</Image.Clip>
+					</Image>
+					<TextBlock
+						Margin="0,10"
+						HorizontalAlignment="Center"
+						Text="洛洛" />
+				</StackPanel>
+				<ListBox
+					SelectionMode="Single"
+					Items="{Binding MenubarItems}"
+					SelectedItem="{Binding MenuBarSelectItem}"
+					DockPanel.Dock="Bottom">
+					<ListBox.Styles>
 
-	<TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+						<Style Selector="ListBoxItem:not(.notransitions) /template/ Border#selectedBorder,
+                   ListBoxItem:not(.notransitions) /template/ Border#pointerOverBorder">
+							<Setter Property="Background" Value="{DynamicResource PrimaryHueMidBrush}" />
+						</Style>
+					</ListBox.Styles>
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel
+								VerticalAlignment="Center"
+								Background="Transparent"
+								Orientation="Horizontal">
+								<Icon:MaterialIcon
+									Margin="10,0"
+									VerticalAlignment="Center"
+									Kind="{Binding Icon}" />
+								<TextBlock
+									Margin="10,0"
+									FontSize="20"
+									Foreground="White"
+									Text="{Binding Title}" />
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</DockPanel>
+		</materialDesign:NavigationDrawer.LeftDrawerContent>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="*" />
+			</Grid.RowDefinitions>
+			<materialDesign:ColorZone
+				Background="{DynamicResource PrimaryHueMidBrush}"
+				Padding="7"
+				Mode="PrimaryMid">
+				<DockPanel LastChildFill="True">
+					<StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+						<Button
+							Name="btnMin"
+							FontSize="32"
+							Content="—"
+							Classes="Flat"
+
+							Click="OnButtonMinClick" />
+						<Button
+							Name="btnMax"
+							FontSize="32"
+							Content="☐"
+							Classes="Flat"
+							Click="OnButtonMaxClick" />
+						<Button
+							Name="btnClose"
+							FontSize="32"
+							Content="✕"
+							Classes="Flat"
+							Click="OnButtonCloseClick" />
+					</StackPanel>
+					<Menu DockPanel.Dock="Right">
+						<MenuItem>
+							<MenuItem.Header>
+								<Image
+								Width="25"
+								Height="25"
+								Source="/Assets/TA3.jpg">
+									<Image.Clip>
+										<EllipseGeometry
+											Center="12.5,12.5"
+											RadiusX="12.5"
+											RadiusY="12.5" />
+									</Image.Clip>
+								</Image>
+							</MenuItem.Header>
+
+							<MenuItem Header="注销账号" />
+						</MenuItem>
+					</Menu>
+					<StackPanel Orientation="Horizontal">
+						<ToggleButton
+							Padding="10"
+							Name="NavDrawerSwitch"
+							Content="{Icon:MaterialIconExt Kind=HamburgerMenu,Size=37}"
+							IsChecked="False"
+							Classes="Flat TransparentBack" />
+						<Button
+							Padding="10"
+							Classes="Flat"
+							Margin="8,0,0,0"
+							Content="{Icon:MaterialIconExt Kind=ArrowLeft,Size=26}"
+							Tag="Previous Item" />
+						<Button
+							Padding="10"
+							Classes="Flat"
+							Margin="8,0,0,0"
+							Content="{Icon:MaterialIconExt Kind=ArrowRight,Size=26}"
+							Tag="Next Item" />
+						<TextBlock
+							Margin="8,0"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center"
+							FontWeight="Medium"
+							FontSize="22"
+							Text="笔记本" />
+					</StackPanel>
+				</DockPanel>
+			</materialDesign:ColorZone>
+			<rxui:RoutedViewHost
+                    Router="{Binding Router}"
+                    Grid.Row="1"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch" />
+		</Grid>
+	</materialDesign:NavigationDrawer>
 </Window>
