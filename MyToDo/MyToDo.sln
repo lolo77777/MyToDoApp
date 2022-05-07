@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32002.261
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyToDo", "MyToDo\MyToDo.csproj", "{094A128B-BB72-49B9-BD62-CDAC0D561F9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyToDo.Wpf", "MyToDo.Wpf\MyToDo.Wpf.csproj", "{094A128B-BB72-49B9-BD62-CDAC0D561F9A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyToDo.MVVM", "MyToDo.MVVM\MyToDo.MVVM.csproj", "{B9BF4E4C-7486-4A78-9CAA-1643C9D2D359}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyToDo.Avalonia", "MyToDo.Avalonia\MyToDo.Avalonia.csproj", "{BEF0B9FE-810D-43A6-BA63-613FEACA10AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{094A128B-BB72-49B9-BD62-CDAC0D561F9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{094A128B-BB72-49B9-BD62-CDAC0D561F9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{094A128B-BB72-49B9-BD62-CDAC0D561F9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9BF4E4C-7486-4A78-9CAA-1643C9D2D359}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9BF4E4C-7486-4A78-9CAA-1643C9D2D359}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9BF4E4C-7486-4A78-9CAA-1643C9D2D359}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9BF4E4C-7486-4A78-9CAA-1643C9D2D359}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEF0B9FE-810D-43A6-BA63-613FEACA10AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEF0B9FE-810D-43A6-BA63-613FEACA10AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEF0B9FE-810D-43A6-BA63-613FEACA10AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEF0B9FE-810D-43A6-BA63-613FEACA10AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

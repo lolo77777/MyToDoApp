@@ -1,0 +1,18 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="MyToDo.Avalonia.Views.MainView"
+		xmlns:vm="clr-namespace:MyToDo.MVVM.ViewModels;assembly=MyToDo.MVVM"
+        Icon="/Assets/avalonia-logo.ico"
+		FontFamily="微软雅黑"
+
+        Title="MyToDo.Avalonia">
+
+	<Design.DataContext>
+		<vm:MainViewModel />
+	</Design.DataContext>
+
+	<TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+</Window>
