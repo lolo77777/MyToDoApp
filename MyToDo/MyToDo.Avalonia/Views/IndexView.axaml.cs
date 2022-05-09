@@ -9,7 +9,11 @@ public partial class IndexView : ReactiveUserControl<IndexViewModel>
     public IndexView()
     {
         InitializeComponent();
-        this.WhenActivated(d => { });
+        var itemControlTaskBar = this.FindControl<ItemsControl>("itemControlTaskBar");
+        this.WhenActivated(d =>
+        {
+            //this.OneWayBind(ViewModel, vm => vm.TaskBars, v => v.itemControlTaskBar.Items).DisposeWith(d);
+        });
     }
 
     private void InitializeComponent()

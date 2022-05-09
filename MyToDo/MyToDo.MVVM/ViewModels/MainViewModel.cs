@@ -9,6 +9,11 @@ public class MainViewModel : ViewModelBase, IScreen
     public ICommand? NaviForwardCommand { get; set; }
     public string Greeting { get; set; } = "hello avalonia";
 
+    public MainViewModel()
+    {
+        SplatRegistrations.RegisterConstant<IScreen>(this, "MainContent");
+    }
+
     protected override void SetupSubscriptions(CompositeDisposable d)
     {
         base.SetupSubscriptions(d);

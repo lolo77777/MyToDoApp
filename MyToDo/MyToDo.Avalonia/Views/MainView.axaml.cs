@@ -1,19 +1,15 @@
-
-
 namespace MyToDo.Avalonia.Views;
 
 public partial class MainView : ReactiveWindow<MainViewModel>
 {
-    
-
     public MainView()
     {
         InitializeComponent();
         ViewModel = Current.GetService<MainViewModel>();
         this.WhenActivated(d =>
         {
-            var movingOb= this.Events().PointerMoved.Select(e => e.Pointer.IsPrimary);
-            this.Events().PointerPressed.CombineLatest(movingOb).Where(vt=>vt.Second).Subscribe(vt=>BeginMoveDrag(vt.First)).DisposeWith(d);
+            var movingOb = this.Events().PointerMoved.Select(e => e.Pointer.IsPrimary);
+            this.Events().PointerPressed.CombineLatest(movingOb).Where(vt => vt.Second).Subscribe(vt => BeginMoveDrag(vt.First)).DisposeWith(d);
             menuItems.SelectionChanged += (s, e) => naviDrawer.LeftDrawerOpened = false;
             this.OneWayBind(ViewModel, vm => vm.MenubarItems, v => v.menuItems.Items).DisposeWith(d);
             this.OneWayBind(ViewModel, vm => vm.Router, v => v.mainContent.Router).DisposeWith(d);
@@ -36,5 +32,4 @@ public partial class MainView : ReactiveWindow<MainViewModel>
     {
         this.Close();
     }
-   
 }

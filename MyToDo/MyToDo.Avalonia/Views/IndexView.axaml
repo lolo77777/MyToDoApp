@@ -2,10 +2,83 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="MyToDo.Avalonia.Views.IndexView">
+			 xmlns:Icon="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
 
-	<Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-		<TextBlock FontSize="30" Text="IndexView" />
+             xmlns:iac="clr-namespace:Avalonia.Xaml.Interactions.Custom;assembly=Avalonia.Xaml.Interactions"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 xmlns:vm="clr-namespace:MyToDo.MVVM.ViewModels;assembly=MyToDo.MVVM"
+			 xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             x:Class="MyToDo.Avalonia.Views.IndexView">
+	<Design.DataContext>
+		<vm:IndexViewModel />
+	</Design.DataContext>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition
+				Height="auto" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+		<ItemsControl
+			Name="itemControlTaskBar"
+			Items="{Binding TaskBars}">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<UniformGrid
+						Columns="4" />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+
+					<Button
+						Classes=""
+							Padding="0"
+							Background="Transparent"
+							HorizontalContentAlignment="Stretch"
+							 VerticalContentAlignment="Stretch"
+							Command="{Binding $parent[ItemsControl].DataContext.NavigateCommand}"
+							CommandParameter="{Binding}">
+						<Button.Styles>
+							<Style Selector=":pointerover">
+							</Style>
+						</Button.Styles>
+						<Border
+							x:Name="borderTaskBar"
+							Margin="10"
+							Background="{Binding Color}"
+
+							CornerRadius="5">
+
+							<Border.Styles>
+								<Style Selector="Border:pointerover">
+									<Setter Property="BoxShadow" Value="0 0 2 2 Gray" />
+								</Style>
+							</Border.Styles>
+
+							<Grid>
+								<StackPanel
+									HorizontalAlignment="Left"
+									Margin="20,10">
+
+									<Icon:MaterialIcon
+										Height="30"
+										Width="30"
+										Kind="{Binding Icon}" />
+									<TextBlock
+										Margin="0,15"
+										FontSize="15"
+										Text="{Binding Title}" />
+									<TextBlock
+										FontSize="40"
+										FontWeight="Bold"
+										Text="{Binding Content}" />
+								</StackPanel>
+							</Grid>
+						</Border>
+					</Button>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
 	</Grid>
 </UserControl>

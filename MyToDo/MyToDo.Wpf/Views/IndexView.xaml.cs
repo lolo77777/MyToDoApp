@@ -1,13 +1,15 @@
 ﻿namespace MyToDo.Wpf.Views;
 
-/// <summary>
-/// IndexView.xaml 的交互逻辑
-/// </summary>
+[SingleInstanceView]
 public partial class IndexView
 {
     public IndexView()
     {
         InitializeComponent();
-        this.WhenActivated(d => { });
+
+        this.WhenActivated(d =>
+        {
+            this.OneWayBind(ViewModel, vm => vm.TaskBars, v => v.itemControlTaskBar.ItemsSource).DisposeWith(d);
+        });
     }
 }

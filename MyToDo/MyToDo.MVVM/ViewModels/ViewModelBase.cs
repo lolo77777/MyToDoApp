@@ -7,6 +7,7 @@ public class ViewModelBase : ReactiveObject, IActivatableViewModel, IEnableLogge
     public ViewModelBase()
     {
         Activator = new();
+
         this.WhenActivated(d =>
         {
             Disposable.Create(() => SetupDeactivate())
@@ -14,8 +15,8 @@ public class ViewModelBase : ReactiveObject, IActivatableViewModel, IEnableLogge
 
             SetupCommands();
             SetupSubscriptions(d);
-            SetupStart();
         });
+        SetupStart();
     }
 
     /// <summary>

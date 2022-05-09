@@ -21,7 +21,7 @@ public partial class MainView
             this.Events().MouseMove
                 .Where(e => e.LeftButton == MouseButtonState.Pressed)
                 .Subscribe(_ => DragMove());
-
+            
             this.OneWayBind(ViewModel, vm => vm.MenubarItems, v => v.menuItems.ItemsSource).DisposeWith(d);
             this.OneWayBind(ViewModel, vm => vm.Router, v => v.mainContent.Router).DisposeWith(d);
             this.Bind(ViewModel, vm => vm.MenuBarSelectItem, v => v.menuItems.SelectedItem).DisposeWith(d);
