@@ -50,6 +50,7 @@
                     <ListBox
                         Name="menuItems"
                         DockPanel.Dock="Bottom"
+                        
                         ItemContainerStyle="{StaticResource MyListBoxItemStyle}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>

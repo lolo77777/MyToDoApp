@@ -13,10 +13,11 @@ public partial class MainView
         {
             MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
             MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
-            btnClose.Click += (o, e) => Close();
-            btnMin.Click += (o, e) => WindowState = WindowState.Minimized;
-            btnMax.Click += (o, e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
-            titleBar.MouseDoubleClick += (o, e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+            btnClose.Click += (s, e) => Close();
+            btnMin.Click += (s, e) => WindowState = WindowState.Minimized;
+            btnMax.Click += (s, e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+            titleBar.MouseDoubleClick += (s, e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+            menuItems.SelectionChanged += (s, e) => drawHost.IsLeftDrawerOpen = false;
             this.Events().MouseMove
                 .Where(e => e.LeftButton == MouseButtonState.Pressed)
                 .Subscribe(_ => DragMove());
@@ -25,6 +26,10 @@ public partial class MainView
             this.OneWayBind(ViewModel, vm => vm.Router, v => v.mainContent.Router).DisposeWith(d);
             this.Bind(ViewModel, vm => vm.MenuBarSelectItem, v => v.menuItems.SelectedItem).DisposeWith(d);
             this.BindCommand(ViewModel, vm => vm.NaviBackCommand, v => v.btnNaviBack).DisposeWith(d);
+
+            
+            
+
         });
     }
 }

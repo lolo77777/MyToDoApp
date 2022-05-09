@@ -1,27 +1,24 @@
-using Avalonia.Interactivity;
-using Avalonia.Input;
+
 
 namespace MyToDo.Avalonia.Views;
 
 public partial class MainView : ReactiveWindow<MainViewModel>
 {
-    private bool _isDragMoving;
+    
 
     public MainView()
     {
         InitializeComponent();
         ViewModel = Current.GetService<MainViewModel>();
-        this.PointerMoved += (s, e) => _isDragMoving = e.Pointer.IsPrimary;
-
-        this.PointerPressed += (s, e) =>
-        {
-            if (_isDragMoving)
-            {
-                BeginMoveDrag(e);
-            }
-        };
         this.WhenActivated(d =>
         {
+            var movingOb= this.Events().PointerMoved.Select(e => e.Pointer.IsPrimary);
+            this.Events().PointerPressed.CombineLatest(movingOb).Where(vt=>vt.Second).Subscribe(vt=>BeginMoveDrag(vt.First)).DisposeWith(d);
+            menuItems.SelectionChanged += (s, e) => naviDrawer.LeftDrawerOpened = false;
+            this.OneWayBind(ViewModel, vm => vm.MenubarItems, v => v.menuItems.Items).DisposeWith(d);
+            this.OneWayBind(ViewModel, vm => vm.Router, v => v.mainContent.Router).DisposeWith(d);
+            this.Bind(ViewModel, vm => vm.MenuBarSelectItem, v => v.menuItems.SelectedItem).DisposeWith(d);
+            this.BindCommand(ViewModel, vm => vm.NaviBackCommand, v => v.btnNaviBack).DisposeWith(d);
         });
     }
 
@@ -39,4 +36,5 @@ public partial class MainView : ReactiveWindow<MainViewModel>
     {
         this.Close();
     }
+   
 }

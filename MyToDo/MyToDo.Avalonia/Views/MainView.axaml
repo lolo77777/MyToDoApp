@@ -53,7 +53,7 @@
 	</Window.Styles>-->
 	<!--<dialogHost:DialogHost Identifier="MainDialogHost">
 	</dialogHost:DialogHost>-->
-	<materialDesign:NavigationDrawer LeftDrawerOpened="{Binding ElementName=NavDrawerSwitch, Path=IsChecked, Mode=TwoWay}">
+	<materialDesign:NavigationDrawer Name="naviDrawer" LeftDrawerOpened="{Binding ElementName=NavDrawerSwitch, Path=IsChecked, Mode=TwoWay}">
 		<materialDesign:NavigationDrawer.LeftDrawerContent>
 			<DockPanel>
 				<StackPanel Margin="0,20" DockPanel.Dock="Top">
@@ -74,9 +74,10 @@
 						Text="洛洛" />
 				</StackPanel>
 				<ListBox
+					Name="menuItems"
 					SelectionMode="Single"
-					Items="{Binding MenubarItems}"
-					SelectedItem="{Binding MenuBarSelectItem}"
+					
+					
 					DockPanel.Dock="Bottom">
 					<ListBox.Styles>
 
@@ -114,8 +115,9 @@
 			<materialDesign:ColorZone
 				Background="{DynamicResource PrimaryHueMidBrush}"
 				Padding="7"
+				DoubleTapped="OnButtonMaxClick"
 				Mode="PrimaryMid">
-				<DockPanel LastChildFill="True">
+				<DockPanel  LastChildFill="True">
 					<StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
 						<Button
 							Name="btnMin"
@@ -164,6 +166,7 @@
 							IsChecked="False"
 							Classes="Flat TransparentBack" />
 						<Button
+							Name="btnNaviBack"
 							Padding="10"
 							Classes="Flat"
 							Margin="8,0,0,0"
@@ -186,7 +189,7 @@
 				</DockPanel>
 			</materialDesign:ColorZone>
 			<rxui:RoutedViewHost
-                    Router="{Binding Router}"
+                    Name="mainContent"
                     Grid.Row="1"
                     HorizontalContentAlignment="Stretch"
                     VerticalContentAlignment="Stretch" />
