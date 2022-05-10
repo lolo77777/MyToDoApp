@@ -55,7 +55,7 @@
 	</dialogHost:DialogHost>-->
 	<materialDesign:NavigationDrawer Name="naviDrawer" LeftDrawerOpened="{Binding ElementName=NavDrawerSwitch, Path=IsChecked, Mode=TwoWay}">
 		<materialDesign:NavigationDrawer.LeftDrawerContent>
-			<DockPanel>
+			<DockPanel LastChildFill="True">
 				<StackPanel Margin="0,20" DockPanel.Dock="Top">
 					<Image
 						Width="50"
@@ -76,8 +76,7 @@
 				<ListBox
 					Name="menuItems"
 					SelectionMode="Single"
-					
-					
+
 					DockPanel.Dock="Bottom">
 					<ListBox.Styles>
 

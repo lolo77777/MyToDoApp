@@ -8,10 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\TA3.jpg" />
     <None Remove="Images\头像2.jpg" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\TA3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <EmbeddedResource Include="Images\头像2.jpg" />
   </ItemGroup>
 

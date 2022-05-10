@@ -17,9 +17,14 @@
 		<Grid.RowDefinitions>
 			<RowDefinition
 				Height="auto" />
-			<RowDefinition />
+			<RowDefinition Height="auto" />
+			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
+		<TextBlock
+            Margin="10,0"
+            FontSize="30">Hello Lolo</TextBlock>
 		<ItemsControl
+			Grid.Row="1"
 			Name="itemControlTaskBar"
 			Items="{Binding TaskBars}">
 			<ItemsControl.ItemsPanel>
@@ -30,9 +35,8 @@
 			</ItemsControl.ItemsPanel>
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
-
 					<Button
-						Classes=""
+
 							Padding="0"
 							Background="Transparent"
 							HorizontalContentAlignment="Stretch"
@@ -71,6 +75,7 @@
 										Text="{Binding Title}" />
 									<TextBlock
 										FontSize="40"
+										MinHeight="40"
 										FontWeight="Bold"
 										Text="{Binding Content}" />
 								</StackPanel>
@@ -80,5 +85,118 @@
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>
+		<Grid Margin="0,0,0,10"
+            Grid.Row="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<Border
+                Margin="10,0"
+                Background="#BEBEBE"
+                CornerRadius="5"
+                Opacity="0.5" />
+			<DockPanel
+                Margin="10,0">
+				<DockPanel
+                    Margin="10,5"
+                    DockPanel.Dock="Top"
+                    LastChildFill="False">
+					<TextBlock
+                        DockPanel.Dock="Left"
+                        FontSize="20"
+                        FontWeight="Bold">
+						待办事项
+					</TextBlock>
+					<Button
+                        Width="30"
+                        Height="30"
+                        VerticalAlignment="Top"
+                        Content="{Icon:MaterialIconExt Kind=Add,Size=26}"
+                        DockPanel.Dock="Right"
+                        Classes="Flat" />
+				</DockPanel>
+				<ListBox
+                    Items="{Binding ToDoDtos}"
+                    DockPanel.Dock="Bottom">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<DockPanel
+							   MaxHeight="80"
+							   Margin="5,0"
+							   LastChildFill="False">
+								<StackPanel
+									MaxHeight="80"
+									Margin="5,0">
+									<TextBlock
+										FontSize="16"
+										FontWeight="Bold"
+										Text="{Binding Title}" />
+									<TextBlock
+										Margin="0,5,0,0"
+										Opacity="0.4"
+										Text="{Binding Content}" />
+								</StackPanel>
+								<ToggleSwitch VerticalAlignment="Center" DockPanel.Dock="Right" />
+							</DockPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</DockPanel>
+			<Border
+                Grid.Column="1"
+                Margin="10,0"
+                Background="#BEBEBE"
+                CornerRadius="5"
+                Opacity="0.5" />
+			<DockPanel
+                Grid.Column="1"
+                Margin="10,0">
+				<DockPanel
+                    Margin="10,5"
+                    DockPanel.Dock="Top"
+                    LastChildFill="False">
+					<TextBlock
+                        DockPanel.Dock="Left"
+                        FontSize="20"
+                        FontWeight="Bold">
+						备忘
+					</TextBlock>
+					<Button
+                        Width="30"
+                        Height="30"
+                        VerticalAlignment="Top"
+                        Content="{Icon:MaterialIconExt  Kind=Add,
+                                              Size=26}"
+                        DockPanel.Dock="Right"
+                        Classes="Flat" />
+				</DockPanel>
+				<ListBox
+
+                    Items="{Binding MemoDtos}"
+                    DockPanel.Dock="Bottom">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<DockPanel
+							   MaxHeight="80"
+							   Margin="5,0"
+							   LastChildFill="False">
+								<StackPanel DockPanel.Dock="Left">
+									<TextBlock
+										FontSize="16"
+										FontWeight="Bold"
+										Text="{Binding Title}" />
+									<TextBlock
+										Margin="0,5,0,0"
+										Opacity="0.4"
+										Text="{Binding Content}" />
+								</StackPanel>
+								<ToggleSwitch VerticalAlignment="Center" DockPanel.Dock="Right" />
+							</DockPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</DockPanel>
+		</Grid>
 	</Grid>
 </UserControl>

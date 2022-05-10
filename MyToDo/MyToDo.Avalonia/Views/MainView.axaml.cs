@@ -6,6 +6,7 @@ public partial class MainView : ReactiveWindow<MainViewModel>
     {
         InitializeComponent();
         ViewModel = Current.GetService<MainViewModel>();
+
         this.WhenActivated(d =>
         {
             var movingOb = this.Events().PointerMoved.Select(e => e.Pointer.IsPrimary);

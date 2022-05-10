@@ -6,7 +6,8 @@ public class IndexViewModel : ViewModelBase, IRoutableViewModel
 
     public IScreen HostScreen { get; }
     public ObservableCollection<TaskBar> TaskBars { get; set; } = new();
-
+    public ObservableCollection<MemoDto> MemoDtos { get; set; } = new();
+    public ObservableCollection<ToDoDto> ToDoDtos { get; set; } = new();
     public ReactiveCommand<TaskBar, IObservable<IRoutableViewModel>?> NavigateCommand { get; set; }
 
     public IndexViewModel()
@@ -18,6 +19,16 @@ public class IndexViewModel : ViewModelBase, IRoutableViewModel
     {
         base.SetupStart();
         CreatTaskBars();
+        CreatTestData();
+    }
+
+    private void CreatTestData()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            ToDoDtos.Add(new ToDoDto { Content = "代办" + i, Title = "代办" + 1 });
+            MemoDtos.Add(new MemoDto { Content = "备忘" + i, Title = "备忘" + i });
+        }
     }
 
     protected override void SetupCommands()
