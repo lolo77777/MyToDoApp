@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="akavache" Version="8.1.1" />
     <PackageReference Include="ReactiveUI" Version="18.0.10" />
     <PackageReference Include="ReactiveUI.Fody" Version="18.0.10" />
     <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="1.1.33">

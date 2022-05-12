@@ -24,3 +24,4 @@ global using System.Reactive.Disposables;
 global using System.Reactive.Linq;
 
 global using static Splat.Locator;
+global using MyToDo.MVVM.Common.Drivers;

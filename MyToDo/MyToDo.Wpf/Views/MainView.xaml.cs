@@ -8,7 +8,7 @@ public partial class MainView
     public MainView()
     {
         InitializeComponent();
-        ViewModel = Current.GetService<MainViewModel>();
+        ViewModel = (MainViewModel?)Current.GetService<IScreen>("MainContent");
         this.WhenActivated(d =>
         {
             MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;

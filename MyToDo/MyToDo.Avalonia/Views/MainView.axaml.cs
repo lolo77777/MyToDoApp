@@ -5,7 +5,7 @@ public partial class MainView : ReactiveWindow<MainViewModel>
     public MainView()
     {
         InitializeComponent();
-        ViewModel = Current.GetService<MainViewModel>();
+        ViewModel = (MainViewModel?)Current.GetService<IScreen>("MainContent");
 
         this.WhenActivated(d =>
         {

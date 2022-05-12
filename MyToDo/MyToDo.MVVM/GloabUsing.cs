@@ -16,3 +16,4 @@ global using System.Reactive.Linq;
 global using System.Windows.Input;
 
 global using static Splat.Locator;
+global using Akavache;

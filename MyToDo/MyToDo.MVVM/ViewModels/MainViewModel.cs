@@ -1,17 +1,22 @@
-﻿namespace MyToDo.MVVM.ViewModels;
+﻿using System.Runtime.Serialization;
 
+namespace MyToDo.MVVM.ViewModels;
+
+[DataContract]
 public class MainViewModel : ViewModelBase, IScreen
 {
     public ObservableCollection<MenuBar> MenubarItems { get; set; } = new();
     [Reactive] public RoutingState Router { get; set; } = new();
+
+    [DataMember]
     [Reactive] public MenuBar? MenuBarSelectItem { get; set; }
+
     public ICommand? NaviBackCommand { get; set; }
     public ICommand? NaviForwardCommand { get; set; }
     public string Greeting { get; set; } = "hello avalonia";
 
     public MainViewModel()
     {
-        SplatRegistrations.RegisterConstant<IScreen>(this, "MainContent");
     }
 
     protected override void SetupSubscriptions(CompositeDisposable d)
@@ -46,6 +51,6 @@ public class MainViewModel : ViewModelBase, IScreen
         MenubarItems.Add(new MenuBar() { Icon = "NotebookPlus", Title = "备忘录", ViewName = ViewName.MemoName });
         MenubarItems.Add(new MenuBar() { Icon = "Cog", Title = "设置", ViewName = ViewName.SettingName });
 
-        MenuBarSelectItem = MenubarItems[0];
+        //MenuBarSelectItem = MenubarItems[0];
     }
 }
