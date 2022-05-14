@@ -8,7 +8,6 @@
 		xmlns:rxui="http://reactiveui.net"
 		xmlns:materialDesign="clr-namespace:Material.Styles;assembly=Material.Styles"
 		xmlns:dialogHost="clr-namespace:DialogHost;assembly=DialogHost.Avalonia"
-
         xmlns:Icon="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         Icon="/Assets/avalonia-logo.ico"
 		FontFamily="微软雅黑"
@@ -21,7 +20,6 @@
 		FontWeight="Regular"
 		WindowStartupLocation="CenterScreen"
         Title="MyToDo.Avalonia">
-
 	<Design.DataContext>
 		<vm:MainViewModel />
 	</Design.DataContext>

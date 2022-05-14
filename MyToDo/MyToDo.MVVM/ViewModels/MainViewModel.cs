@@ -26,7 +26,8 @@ public class MainViewModel : ViewModelBase, IScreen
             .WhereNotNull()
             .Select(item => Current.GetService<IRoutableViewModel>(item.ViewName))
             .WhereNotNull()
-            .Subscribe(vm => Router.Navigate.Execute(vm));
+            .Do(vm => Router.Navigate.Execute(vm))
+            .Subscribe(vm => GC.Collect());
     }
 
     protected override void SetupStart()
