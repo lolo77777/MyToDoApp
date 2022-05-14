@@ -8,5 +8,7 @@ public static class ConfigRegister
         CurrentMutable.Register<IViewFor<SettingViewModel>, SettingView>();
         CurrentMutable.Register<IViewFor<ToDoViewModel>, ToDoView>();
         CurrentMutable.Register<IViewFor<MemoViewModel>, MemoView>();
+        CurrentMutable.Register<IViewFor<SkinViewModel>, SkinView>();
+        CurrentMutable.Register<IViewFor<AboutViewModel>, AboutView>();
     }
 }

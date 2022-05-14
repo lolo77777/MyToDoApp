@@ -14,11 +14,14 @@
     mc:Ignorable="d">
     <md:DrawerHost
         Name="drawerRightAddToDo">
-        <DockPanel
-            LastChildFill="True">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
             <DockPanel
-                Margin="20,0"
-                DockPanel.Dock="Top"
+                Margin="15,0,0,0"
                 LastChildFill="False">
                 <StackPanel
                     VerticalAlignment="Center"
@@ -40,8 +43,6 @@
                         SelectedIndex="0"
                         Style="{StaticResource MaterialDesignComboBox}">
                         <ComboBoxItem
-                            Content="全部" />
-                        <ComboBoxItem
                             Content="已完成" />
                         <ComboBoxItem
                             Content="未完成" />
@@ -49,118 +50,122 @@
                 </StackPanel>
                 <Button
                     x:Name="btnAddToDo"
+                    Margin="10,10"
                     VerticalAlignment="Center"
                     Content="添加代办"
                     DockPanel.Dock="Right" />
             </DockPanel>
             <ScrollViewer
-                Margin="30,20,30,30"
-                DockPanel.Dock="Bottom"
+                Grid.Row="1"
                 VerticalScrollBarVisibility="Hidden">
                 <ItemsControl
+                    HorizontalAlignment="Center"
                     x:Name="itemControlToDo">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid
-                                Columns="5" />
+                            <WrapPanel />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border
-                                x:Name="borderTaskBar"
-                                Margin="10"
-                                Background="Green"
-                                CornerRadius="5">
-                                <!--<Border.InputBindings>
-                            <MouseBinding
-                                Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
-                                CommandParameter="{Binding}"
-                                MouseAction="LeftClick" />
-                        </Border.InputBindings>-->
-                                <Border.Style>
-                                    <Style
-                                        TargetType="Border">
-                                        <Style.Triggers>
-                                            <Trigger
-                                                Property="IsMouseOver"
-                                                Value="True">
-                                                <Setter
-                                                    Property="Effect">
-                                                    <Setter.Value>
-                                                        <DropShadowEffect
-                                                            BlurRadius="10"
-                                                            ShadowDepth="1"
-                                                            Color="#DDDDDD" />
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
+                            <md:TransitioningContent
+                                OpeningEffect="{md:TransitionEffect Kind=ExpandIn}">
                                 <Grid
-                                    MinHeight="150">
-                                    <StackPanel
-                                        Margin="10">
-                                        <TextBlock
-                                            FontSize="15"
-                                            Text="{Binding Title}" />
-                                        <TextBlock
-                                            Margin="0,5"
-                                            Text="{Binding Content}" />
-                                    </StackPanel>
+                                    Margin="8"
+                                    Width="220"
+                                    MinHeight="180"
+                                    MaxHeight="250">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition
+                                            Height="auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
                                     <md:PopupBox
-                                        Margin="0,10,0,0"
                                         HorizontalAlignment="Right"
-                                        VerticalAlignment="Top"
                                         Panel.ZIndex="1">
                                         <Button
                                             VerticalAlignment="Center"
                                             Content="完成" />
                                     </md:PopupBox>
+                                    <Border
+                                        x:Name="borderTaskBar"
+                                        Grid.RowSpan="2"
+                                        Background="Green"
+                                        CornerRadius="3">
+                                        <Border.Style>
+                                            <Style
+                                                TargetType="Border">
+                                                <Style.Triggers>
+                                                    <Trigger
+                                                        Property="IsMouseOver"
+                                                        Value="True">
+                                                        <Setter
+                                                            Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect
+                                                                    BlurRadius="10"
+                                                                    ShadowDepth="1"
+                                                                    Color="#DDDDDD" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                    </Border>
+                                    <TextBlock
+                                        Padding="10,5"
+                                        FontSize="15"
+                                        Text="{Binding Title}" />
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Padding="10,5"
+                                        Text="{Binding Content}" />
                                     <Canvas
+                                        Grid.RowSpan="2"
                                         ClipToBounds="True">
-                                        <Ellipse
-                                            Canvas.Left="180"
-                                            Canvas.Top="20"
-                                            Width="100"
-                                            Height="100"
-                                            Fill="Gray"
-                                            Opacity="0.4" />
-                                        <Ellipse
-                                            Canvas.Left="160"
-                                            Canvas.Top="70"
-                                            Width="100"
-                                            Height="100"
-                                            Fill="Gray"
-                                            Opacity="0.4" />
+                                        <Border
+                                            Canvas.Top="10"
+                                            Canvas.Right="-50"
+                                            Width="120"
+                                            Height="120"
+                                            Background="#FFFFFF"
+                                            CornerRadius="100"
+                                            Opacity="0.1" />
+                                        <Border
+                                            Canvas.Top="80"
+                                            Canvas.Right="-30"
+                                            Width="120"
+                                            Height="120"
+                                            Background="#FFFFFF"
+                                            CornerRadius="100"
+                                            Opacity="0.1" />
                                     </Canvas>
                                 </Grid>
-                            </Border>
+                            </md:TransitioningContent>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
-        </DockPanel>
+        </Grid>
         <md:DrawerHost.RightDrawerContent>
             <DockPanel
-                LastChildFill="False"
-                MinWidth="220"
-                Margin="20">
+                MinWidth="280"
+                LastChildFill="False">
                 <TextBlock
-                    Margin="0,0,0,20"
+                    Padding="20,10"
                     DockPanel.Dock="Top"
-                    FontSize="28"
+                    FontSize="20"
                     FontWeight="Bold"
                     Text="添加代办" />
                 <StackPanel
+                    Margin="20"
                     DockPanel.Dock="Top"
                     Orientation="Horizontal">
                     <TextBlock
-                        Margin="10,0"
-                        Text="状态:" />
+                        VerticalAlignment="Center"
+                        Text="状态：" />
                     <ComboBox
-                        MinWidth="100"
                         SelectedIndex="0">
                         <ComboBoxItem
                             Content="未完成" />
@@ -169,17 +174,19 @@
                     </ComboBox>
                 </StackPanel>
                 <TextBox
-                    MinWidth="180"
-                    Margin="0,10"
-                    DockPanel.Dock="Top"
-                    md:HintAssist.Hint="请输入代办概要..." />
+                    Margin="20,0"
+                    md:HintAssist.Hint="请输入代办概要..."
+                    DockPanel.Dock="Top" />
                 <TextBox
                     MinWidth="180"
-                    Margin="0,10"
-                    DockPanel.Dock="Top"
-                    md:HintAssist.Hint="请输入代办内容..." />
+                    MinHeight="100"
+                    Margin="20"
+                    md:HintAssist.Hint="请输入代办内容..."
+                    DockPanel.Dock="Top" />
                 <Button
-                    Content="添加到代办" />
+                    Margin="20,10"
+                    Content="添加到代办"
+                    DockPanel.Dock="Top" />
             </DockPanel>
         </md:DrawerHost.RightDrawerContent>
     </md:DrawerHost>

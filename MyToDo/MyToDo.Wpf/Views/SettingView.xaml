@@ -6,12 +6,61 @@
     xmlns:local="clr-namespace:MyToDo.Wpf.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rxui="http://reactiveui.net"
-    xmlns:viewmodels="clr-namespace:MyToDo.MVVM.ViewModels"
+    xmlns:viewmodels="clr-namespace:MyToDo.MVVM.ViewModels;assembly=MyToDo.MVVM"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:TypeArguments="viewmodels:SettingViewModel"
     mc:Ignorable="d">
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock FontSize="30" Text="SettingView" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Text="设置"
+            FontSize="26"
+            Margin="20,10" />
+        <Border
+            BorderBrush="#dddddd"
+            BorderThickness="0,0,0,0.3" />
+        <Grid
+            Margin="30"
+            Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="200" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <ListBox
+                Name="menuItems"
+                ItemContainerStyle="{StaticResource MyListBoxItemStyle}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel
+                            VerticalAlignment="Center"
+                            Background="Transparent"
+                            Orientation="Horizontal">
+                            <md:PackIcon
+                                Margin="15,0"
+                                VerticalAlignment="Center"
+                                Kind="{Binding Icon}" />
+                            <TextBlock
+                                Margin="10,0"
+                                FontSize="20"
+                                Foreground="White"
+                                Text="{Binding Title}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <rxui:RoutedViewHost
+                Margin="10,0"
+                Grid.Column="1"
+                Name="routedViewHostSetting"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch" />
+        </Grid>
     </Grid>
 </rxui:ReactiveUserControl>

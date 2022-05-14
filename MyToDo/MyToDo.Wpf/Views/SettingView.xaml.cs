@@ -8,6 +8,11 @@ public partial class SettingView
     public SettingView()
     {
         InitializeComponent();
-        this.WhenActivated(d => { });
+        this.WhenActivated(d =>
+        {
+            this.OneWayBind(ViewModel, vm => vm.MenubarItems, v => v.menuItems.ItemsSource).DisposeWith(d);
+            this.OneWayBind(ViewModel, vm => vm.Router, v => v.routedViewHostSetting.Router).DisposeWith(d);
+            this.Bind(ViewModel, vm => vm.MenuBarSelectItem, v => v.menuItems.SelectedItem).DisposeWith(d);
+        });
     }
 }

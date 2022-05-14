@@ -23,3 +23,10 @@ global using System.Windows.Media.Imaging;
 global using System.Windows.Navigation;
 
 global using static Splat.Locator;
+
+global using MaterialDesignThemes.Wpf;
+
+global using System.Reactive;
+
+global using MaterialDesignColors;
+global using MaterialDesignColors.ColorManipulation;

@@ -15,9 +15,13 @@ public class BootStarpper
     {
         SplatRegistrations.SetupIOC();
         SplatRegistrations.RegisterConstant<IScreen>(RxApp.SuspensionHost.GetAppState<MainViewModel>(), "MainContent");
+        SettingViewModel settingVM = new();
+        SplatRegistrations.RegisterConstant<IScreen>(settingVM, "SettingContent");
+        SplatRegistrations.RegisterConstant<IRoutableViewModel>(settingVM, ViewName.SettingName);
         SplatRegistrations.RegisterLazySingleton<IRoutableViewModel, IndexViewModel>(ViewName.IndexName);
         SplatRegistrations.RegisterLazySingleton<IRoutableViewModel, MemoViewModel>(ViewName.MemoName);
         SplatRegistrations.RegisterLazySingleton<IRoutableViewModel, ToDoViewModel>(ViewName.ToDoName);
-        SplatRegistrations.RegisterLazySingleton<IRoutableViewModel, SettingViewModel>(ViewName.SettingName);
+        SplatRegistrations.Register<IRoutableViewModel, SkinViewModel>(ViewName.SkinName);
+        SplatRegistrations.Register<IRoutableViewModel, AboutViewModel>(ViewName.AboutName);
     }
 }
