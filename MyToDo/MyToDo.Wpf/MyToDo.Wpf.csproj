@@ -40,6 +40,6 @@
     <ProjectReference Include="..\MyToDo.MVVM\MyToDo.MVVM.csproj" />
   </ItemGroup>
 
-  <Import Project="..\MyToDo.Share\MyToDo.Share.projitems" Label="Shared" />
+  <Import Project="..\MyToDo.ViewShare\MyToDo.ViewShare.projitems" Label="Shared" />
 	
 </Project>

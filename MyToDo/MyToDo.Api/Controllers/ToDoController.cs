@@ -1,0 +1,34 @@
+﻿namespace MyToDo.Api.Controllers;
+
+/// <summary>
+/// 待办事项控制器
+/// </summary>
+[ApiController]
+[Route("api/[controller]/[action]")]
+public class ToDoController : ControllerBase
+{
+    private readonly ITodoService service;
+
+    public ToDoController(ITodoService service)
+    {
+        this.service = service;
+    }
+
+    [HttpGet]
+    public async Task<Result<ToDo>> Get(int id) => await service.GetSingleAsync(id);
+
+    [HttpGet]
+    public async Task<Result<List<ToDo>>> GetAll([FromQuery] ToDoParameter param) => await service.GetAllAsync(param);
+
+    [HttpGet]
+    public async Task<Result<SummaryDto>> Summary() => await service.Summary();
+
+    [HttpPost]
+    public async Task<Result> Add([FromBody] ToDoDto model) => await service.AddAsync(model);
+
+    [HttpPost]
+    public async Task<Result<ToDo>> Update([FromBody] ToDoDto model) => await service.UpdateAsync(model);
+
+    [HttpDelete]
+    public async Task<Result> Delete(int id) => await service.DeleteAsync(id);
+}
