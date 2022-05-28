@@ -1,14 +1,4 @@
-﻿using AutoMapper;
-
-using FluentResults;
-
-using FreeSql;
-
-using MyToDo.Api.Context;
-using MyToDo.Share.Parameters;
-using MyToDo.Shared.Dtos;
-
-namespace MyToDo.Api.Services;
+﻿namespace MyToDo.Api.Services;
 
 public class MemoService : IMemoService
 {
@@ -23,7 +13,7 @@ public class MemoService : IMemoService
         _mapper = mapper;
     }
 
-    public async Task<Result> AddAsync(MemoDto model)
+    public async Task<ApiResult> AddAsync(MemoDto model)
     {
         using IUnitOfWork unit = _unitOfWorkManager.Begin();
         try
@@ -31,30 +21,30 @@ public class MemoService : IMemoService
             var memo = _mapper.Map<Memo>(model);
             await _memoRepository.InsertAsync(memo);
             unit.Commit();
-            return Result.Ok();
+            return Result.Ok().ToApiResult();
         }
         catch (Exception ex)
         {
-            return Result.Fail(ex.Message);
+            return Result.Fail(ex.Message).ToApiResult();
         }
     }
 
-    public async Task<Result> DeleteAsync(int id)
+    public async Task<ApiResult> DeleteAsync(int id)
     {
         using IUnitOfWork unit = _unitOfWorkManager.Begin();
         try
         {
             await _memoRepository.DeleteAsync(id);
             unit.Commit();
-            return Result.Ok();
+            return Result.Ok().ToApiResult();
         }
         catch (Exception ex)
         {
-            return Result.Fail(ex.Message);
+            return Result.Fail(ex.Message).ToApiResult();
         }
     }
 
-    public async Task<Result<List<Memo>>> GetAllAsync(QueryParameter query)
+    public async Task<ApiResult<List<Memo>>> GetAllAsync(QueryParameter query)
     {
         try
         {
@@ -63,29 +53,29 @@ public class MemoService : IMemoService
                 .Page(query.PageIndex, query.PageSize)
                 .OrderByDescending(x => x.CreateDate)
                 .ToListAsync();
-            return Result.Ok(memos);
+            return Result.Ok(memos).ToApiResult();
         }
         catch (Exception ex)
         {
-            return Result.Fail("获取memo数据失败").WithError(ex.Message);
+            return Result.Fail<List<Memo>>("获取memo数据失败").WithError(ex.Message).ToApiResult();
         }
     }
 
-    public async Task<Result<Memo>> GetSingleAsync(int id)
+    public async Task<ApiResult<Memo>> GetSingleAsync(int id)
     {
         try
         {
             var memo = await _memoRepository.GetAsync(id);
 
-            return Result.Ok(memo);
+            return Result.Ok(memo).ToApiResult();
         }
         catch (Exception ex)
         {
-            return Result.Fail("获取memo数据失败").WithError(ex.Message);
+            return Result.Fail<Memo>("获取memo数据失败").WithError(ex.Message).ToApiResult();
         }
     }
 
-    public async Task<Result<Memo>> UpdateAsync(MemoDto model)
+    public async Task<ApiResult<Memo>> UpdateAsync(MemoDto model)
     {
         using IUnitOfWork unit = _unitOfWorkManager.Begin();
         try
@@ -97,11 +87,11 @@ public class MemoService : IMemoService
             memo.UpdateDate = DateTime.Now;
             await _memoRepository.UpdateAsync(memo);
             unit.Commit();
-            return Result.Ok(memo);
+            return Result.Ok(memo).ToApiResult();
         }
         catch (Exception ex)
         {
-            return Result.Fail("更新memo数据失败").WithError(ex.Message);
+            return Result.Fail<Memo>("更新memo数据失败").WithError(ex.Message).ToApiResult();
         }
     }
 }

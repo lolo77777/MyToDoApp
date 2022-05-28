@@ -15,3 +15,5 @@ global using System.Collections.Generic;
 global using System.Linq;
 global using System.Threading.Tasks;
 global using System.Reflection;
+global using MyToDo.Share;
+global using MyToDo.Shared;

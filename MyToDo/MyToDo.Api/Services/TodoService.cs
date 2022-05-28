@@ -28,7 +28,7 @@ public class TodoService : ITodoService
         _mapper = mapper;
     }
 
-    public async Task<Result> AddAsync(ToDoDto model)
+    public async Task<ApiResult> AddAsync(ToDoDto model)
     {
         try
         {
@@ -36,49 +36,49 @@ public class TodoService : ITodoService
             var todo = _mapper.Map<ToDo>(model);
             await _toDoRepository.InsertAsync(todo);
             unit.Commit();
-            return Result.Ok();
+            return Result.Ok().ToApiResult();
         }
         catch (Exception ex)
         {
-            return Result.Fail("添加todo数据失败").WithError(ex.Message);
+            return Result.Fail("添加todo数据失败").WithError(ex.Message).ToApiResult();
         }
     }
 
-    public async Task<Result> DeleteAsync(int id)
+    public async Task<ApiResult> DeleteAsync(int id)
     {
         try
         {
             using IUnitOfWork unit = _unitOfWorkManager.Begin();
             await _toDoRepository.DeleteAsync(id);
             unit.Commit();
-            return Result.Ok();
+            return Result.Ok().ToApiResult();
         }
         catch (Exception ex)
         {
-            return Result.Fail("添加todo数据失败").WithError(ex.Message);
+            return Result.Fail("添加todo数据失败").WithError(ex.Message).ToApiResult();
         }
     }
 
-    public async Task<Result<List<ToDo>>> GetAllAsync(QueryParameter query)
+    public async Task<ApiResult<List<ToDo>>> GetAllAsync(QueryParameter query)
     {
         using IUnitOfWork unit = _unitOfWorkManager.Begin();
         try
         {
             var todos = await _toDoRepository
-                .Where(x => string.IsNullOrWhiteSpace(query.Search) ? true : x.Title.Contains(query.Search))
+                .Where(x => string.IsNullOrWhiteSpace(query.Search) || x.Title.Contains(query.Search))
                 .Page(query.PageIndex, query.PageSize)
                 .OrderByDescending(x => x.CreateDate)
                 .ToListAsync();
             unit.Commit();
-            return Result.Ok(todos);
+            return Result.Ok(todos).ToApiResult();
         }
         catch (Exception ex)
         {
-            return Result.Fail("获取todos数据失败").WithError(ex.Message);
+            return Result.Fail<List<ToDo>>("获取todos数据失败").WithError(ex.Message).ToApiResult();
         }
     }
 
-    public async Task<Result<List<ToDo>>> GetAllAsync(ToDoParameter query)
+    public async Task<ApiResult<List<ToDo>>> GetAllAsync(ToDoParameter query)
     {
         try
         {
@@ -89,29 +89,29 @@ public class TodoService : ITodoService
                 .OrderByDescending(x => x.CreateDate)
                 .ToListAsync();
 
-            return Result.Ok(todos);
+            return Result.Ok(todos).ToApiResult();
         }
         catch (Exception ex)
         {
-            return Result.Fail("获取memo数据失败").WithError(ex.Message);
+            return Result.Fail<List<ToDo>>("获取memo数据失败").WithError(ex.Message).ToApiResult();
         }
     }
 
-    public async Task<Result<ToDo>> GetSingleAsync(int id)
+    public async Task<ApiResult<ToDo>> GetSingleAsync(int id)
     {
         try
         {
             var todo = await _toDoRepository.GetAsync(id);
 
-            return Result.Ok(todo);
+            return Result.Ok(todo).ToApiResult();
         }
         catch (Exception ex)
         {
-            return Result.Fail("获取todo数据失败").WithError(ex.Message);
+            return Result.Fail<ToDo>("获取todo数据失败").WithError(ex.Message).ToApiResult();
         }
     }
 
-    public async Task<Result<SummaryDto>> Summary()
+    public async Task<ApiResult<SummaryDto>> Summary()
     {
         try
         {
@@ -128,15 +128,15 @@ public class TodoService : ITodoService
             summary.MemoeCount = memos.Count;  //汇总备忘录数量
             summary.ToDoList = new ObservableCollection<ToDoDto>(_mapper.Map<List<ToDoDto>>(todos.Where(t => t.Status == 0)));
             summary.MemoList = new ObservableCollection<MemoDto>(_mapper.Map<List<MemoDto>>(memos));
-            return Result.Ok(summary);
+            return Result.Ok(summary).ToApiResult();
         }
         catch (Exception ex)
         {
-            return Result.Fail(ex.Message);
+            return Result.Fail<SummaryDto>(ex.Message).ToApiResult();
         }
     }
 
-    public async Task<Result<ToDo>> UpdateAsync(ToDoDto model)
+    public async Task<ApiResult<ToDo>> UpdateAsync(ToDoDto model)
     {
         using IUnitOfWork unit = _unitOfWorkManager.Begin();
         try
@@ -149,11 +149,11 @@ public class TodoService : ITodoService
             todo.Status = dbTodo.Status;
             await _toDoRepository.UpdateAsync(todo);
             unit.Commit();
-            return Result.Ok(todo);
+            return Result.Ok(todo).ToApiResult();
         }
         catch (Exception ex)
         {
-            return Result.Fail("更新memo数据失败").WithError(ex.Message);
+            return Result.Fail<ToDo>("更新memo数据失败").WithError(ex.Message).ToApiResult();
         }
     }
 }

@@ -6,13 +6,13 @@ namespace MyToDo.Api.Services;
 
 public interface IBaseService<TIn, TOut>
 {
-    Task<Result<List<TOut>>> GetAllAsync(QueryParameter query);
+    Task<ApiResult<List<TOut>>> GetAllAsync(QueryParameter query);
 
-    Task<Result<TOut>> GetSingleAsync(int id);
+    Task<ApiResult<TOut>> GetSingleAsync(int id);
 
-    Task<Result> AddAsync(TIn model);
+    Task<ApiResult> AddAsync(TIn model);
 
-    Task<Result<TOut>> UpdateAsync(TIn model);
+    Task<ApiResult<TOut>> UpdateAsync(TIn model);
 
-    Task<Result> DeleteAsync(int id);
+    Task<ApiResult> DeleteAsync(int id);
 }

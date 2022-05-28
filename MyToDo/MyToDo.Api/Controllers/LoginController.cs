@@ -15,10 +15,10 @@ public class LoginController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<Result<UserDto>> Login([FromBody] UserDto param) =>
+    public async Task<ApiResult<UserDto>> Login([FromBody] UserDto param) =>
         await _service.LoginAsync(param.Account, param.PassWord);
 
     [HttpPost]
-    public async Task<Result> Resgiter([FromBody] UserDto param) =>
+    public async Task<ApiResult> Resgiter([FromBody] UserDto param) =>
         await _service.Resgiter(param);
 }

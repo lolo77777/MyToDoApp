@@ -15,17 +15,17 @@ public class MemoController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<Result<Memo>> Get(int id) => await service.GetSingleAsync(id);
+    public async Task<ApiResult<Memo>> Get(int id) => await service.GetSingleAsync(id);
 
     [HttpGet]
-    public async Task<Result<List<Memo>>> GetAll([FromQuery] QueryParameter param) => await service.GetAllAsync(param);
+    public async Task<ApiResult<List<Memo>>> GetAll([FromQuery] QueryParameter param) => await service.GetAllAsync(param);
 
     [HttpPost]
-    public async Task<Result> Add([FromBody] MemoDto model) => await service.AddAsync(model);
+    public async Task<ApiResult> Add([FromBody] MemoDto model) => await service.AddAsync(model);
 
     [HttpPost]
-    public async Task<Result<Memo>> Update([FromBody] MemoDto model) => await service.UpdateAsync(model);
+    public async Task<ApiResult<Memo>> Update([FromBody] MemoDto model) => await service.UpdateAsync(model);
 
     [HttpDelete]
-    public async Task<Result> Delete(int id) => await service.DeleteAsync(id);
+    public async Task<ApiResult> Delete(int id) => await service.DeleteAsync(id);
 }
