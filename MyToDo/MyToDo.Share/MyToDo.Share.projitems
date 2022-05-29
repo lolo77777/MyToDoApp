@@ -9,7 +9,6 @@
     <Import_RootNamespace>MyToDo.Share</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)ApiResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Dtos\BaseDto.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Dtos\MemoDto.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Dtos\ResgiterUserDto.cs" />

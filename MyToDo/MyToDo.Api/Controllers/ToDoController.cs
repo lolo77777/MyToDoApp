@@ -4,7 +4,7 @@
 /// 待办事项控制器
 /// </summary>
 [ApiController]
-[Route("api/[controller]/[action]")]
+[Route("api/todos")]
 public class ToDoController : ControllerBase
 {
     private readonly ITodoService service;
@@ -14,21 +14,69 @@ public class ToDoController : ControllerBase
         this.service = service;
     }
 
-    [HttpGet]
-    public async Task<ApiResult<ToDo>> Get(int id) => await service.GetSingleAsync(id);
+    [HttpGet("{todoId}", Name = nameof(GetTodo))]
+    public async Task<ActionResult<ToDoDto>> GetTodo(int todoId)
+    {
+        var ret = await service.GetSingleAsync(todoId);
+        if (ret.IsSuccess)
+        {
+            return ret.Value != null ? ret.Value : NotFound();
+        }
+        return BadRequest();
+    }
 
-    [HttpGet]
-    public async Task<ApiResult<List<ToDo>>> GetAll([FromQuery] ToDoParameter param) => await service.GetAllAsync(param);
+    [HttpGet(Name = nameof(GetTodos))]
+    public async Task<ActionResult<List<ToDoDto>>> GetTodos([FromQuery] QueryParameter param)
+    {
+        var ret = await service.GetAllAsync(param);
+        if (ret.IsSuccess)
+        {
+            return ret.Value != null && ret.Value.Any() ? ret.Value : NotFound();
+        }
+        return BadRequest();
+    }
 
-    [HttpGet]
-    public async Task<ApiResult<SummaryDto>> Summary() => await service.Summary();
+    [HttpGet("summary")]
+    public async Task<ActionResult<SummaryDto>> GetSummary()
+    {
+        var ret = await service.Summary();
+        if (ret.IsSuccess)
+        {
+            return ret.Value != null ? ret.Value : NotFound();
+        }
+        return BadRequest();
+    }
 
     [HttpPost]
-    public async Task<ApiResult> Add([FromBody] ToDoDto model) => await service.AddAsync(model);
+    public async Task<ActionResult> AddTodo([FromBody] ToDo model)
+    {
+        var ret = await service.AddAsync(model);
+        if (ret.IsSuccess)
+        {
+            return NoContent();
+        }
+        return BadRequest();
+    }
 
-    [HttpPost]
-    public async Task<ApiResult<ToDo>> Update([FromBody] ToDoDto model) => await service.UpdateAsync(model);
+    [HttpPut]
+    public async Task<ActionResult<ToDoDto>> UpdateTodo([FromBody] ToDo model)
+    {
+        var ret = await service.UpdateAsync(model);
+        if (ret.IsSuccess)
+        {
+            return NoContent();
+        }
+        return BadRequest();
+    }
 
-    [HttpDelete]
-    public async Task<ApiResult> Delete(int id) => await service.DeleteAsync(id);
+    [HttpDelete("{todoId}")]
+    public async Task<ActionResult> DeleteTodo(int todoId)
+    {
+        var ret = await service.DeleteAsync(todoId);
+        if (ret.IsSuccess)
+        {
+            return NoContent();
+        }
+        return BadRequest();
+    }
 }

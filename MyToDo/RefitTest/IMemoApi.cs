@@ -1,7 +1,10 @@
 ﻿using FluentResults;
 
+using Microsoft.AspNetCore.Mvc;
+
 using MyToDo.Api.Context;
 using MyToDo.Share;
+using MyToDo.Shared.Dtos;
 
 using Refit;
 
@@ -15,7 +18,10 @@ namespace RefitTest
 {
     public interface IMemoApi
     {
-        [Get("/api/Memo/get?id={id}")]
-        Task<ApiResult<Memo>> GetMemo([AliasAs("id")] int id);
+        [Get("/memos/{id}")]
+        Task<IApiResponse<MemoDto>> GetMemo(int id);
+
+        [Post("/memos")]
+        Task<IApiResponse> AddMemo(MemoDto memo);
     }
 }

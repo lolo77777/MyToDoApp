@@ -1,18 +1,14 @@
-﻿using FluentResults;
+﻿namespace MyToDo.Api.Services;
 
-using MyToDo.Share.Parameters;
-
-namespace MyToDo.Api.Services;
-
-public interface IBaseService<TIn, TOut>
+public interface IBaseService<T, TAdd, TUpdate>
 {
-    Task<ApiResult<List<TOut>>> GetAllAsync(QueryParameter query);
+    Task<Result<List<T>>> GetAllAsync(QueryParameter query);
 
-    Task<ApiResult<TOut>> GetSingleAsync(int id);
+    Task<Result<T>> GetSingleAsync(int id);
 
-    Task<ApiResult> AddAsync(TIn model);
+    Task<Result> AddAsync(TAdd model);
 
-    Task<ApiResult<TOut>> UpdateAsync(TIn model);
+    Task<Result<T>> UpdateAsync(TUpdate model);
 
-    Task<ApiResult> DeleteAsync(int id);
+    Task<Result> DeleteAsync(int id);
 }
