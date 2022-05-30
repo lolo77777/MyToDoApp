@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyToDo.Api", "MyToDo.Api\My
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MyToDo.ViewShare", "MyToDo.ViewShare\MyToDo.ViewShare.shproj", "{95EB318E-AFA8-41CE-AB16-E7D99B6C60BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RefitTest", "RefitTest\RefitTest.csproj", "{77EA5C4D-2F82-4B98-8FA5-B75CDF3ABC0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefitTest", "RefitTest\RefitTest.csproj", "{77EA5C4D-2F82-4B98-8FA5-B75CDF3ABC0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

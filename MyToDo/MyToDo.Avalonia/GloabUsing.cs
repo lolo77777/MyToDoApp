@@ -11,6 +11,7 @@ global using DynamicData;
 
 global using MyToDo.Avalonia.Views;
 global using MyToDo.MVVM;
+global using MyToDo.MVVM.Common.Drivers;
 global using MyToDo.MVVM.ViewModels;
 global using MyToDo.Share.ViewShare;
 
@@ -24,4 +25,3 @@ global using System.Reactive.Disposables;
 global using System.Reactive.Linq;
 
 global using static Splat.Locator;
-global using MyToDo.MVVM.Common.Drivers;

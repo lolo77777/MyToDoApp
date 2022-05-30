@@ -1,30 +1,15 @@
-﻿using AutoMapper;
-
-using FluentResults;
-
-using FreeSql;
-
-using MyToDo.Api.Context;
-using MyToDo.Share.Parameters;
-using MyToDo.Shared.Dtos;
-using MyToDo.Shared.Parameters;
-
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 namespace MyToDo.Api.Services;
 
 public class TodoService : ITodoService
 {
-    private readonly UnitOfWorkManager _unitOfWorkManager;
-    private readonly IBaseRepository<ToDo, int> _toDoRepository;
-    private readonly IBaseRepository<Memo, int> _memoRepository;
+    private readonly ISugarUnitOfWork<MyDbContext> _sugarUnit;
     private readonly IMapper _mapper;
 
-    public TodoService(UnitOfWorkManager unitOfWorkManager, IBaseRepository<ToDo, int> todoRepository, IBaseRepository<Memo, int> memoRepository, IMapper mapper)
+    public TodoService(ISugarUnitOfWork<MyDbContext> sugarUnit, IMapper mapper)
     {
-        _unitOfWorkManager = unitOfWorkManager;
-        _toDoRepository = todoRepository;
-        _memoRepository = memoRepository;
+        _sugarUnit = sugarUnit;
         _mapper = mapper;
     }
 
@@ -32,9 +17,13 @@ public class TodoService : ITodoService
     {
         try
         {
-            using IUnitOfWork unit = _unitOfWorkManager.Begin();
-            await _toDoRepository.InsertAsync(model);
-            unit.Commit();
+            using var unit = _sugarUnit.CreateContext();
+            await unit.ToDos.InsertAsync(model);
+            var re = unit.Commit();
+            if (!re)
+            {
+                return Result.Fail("添加todo数据失败");
+            }
             return Result.Ok();
         }
         catch (Exception ex)
@@ -47,8 +36,8 @@ public class TodoService : ITodoService
     {
         try
         {
-            using IUnitOfWork unit = _unitOfWorkManager.Begin();
-            await _toDoRepository.DeleteAsync(id);
+            using var unit = _sugarUnit.CreateContext();
+            await unit.ToDos.DeleteByIdAsync(id);
             unit.Commit();
             return Result.Ok();
         }
@@ -60,14 +49,13 @@ public class TodoService : ITodoService
 
     public async Task<Result<List<ToDoDto>>> GetAllAsync(QueryParameter query)
     {
-        using IUnitOfWork unit = _unitOfWorkManager.Begin();
         try
         {
-            var todos = await _toDoRepository
-                .Where(x => string.IsNullOrWhiteSpace(query.Search) || x.Title.Contains(query.Search))
-                .Page(query.PageIndex, query.PageSize)
-                .OrderByDescending(x => x.CreateDate)
-                .ToListAsync();
+            using var unit = _sugarUnit.CreateContext();
+            var todos = await unit.ToDos.GetPageListAsync(
+                x => string.IsNullOrWhiteSpace(query.Search) || x.Title.Contains(query.Search),
+              new PageModel { PageIndex = query.PageIndex, PageSize = query.PageSize },
+              x => x.CreateDate, OrderByType.Desc);
             unit.Commit();
             return Result.Ok(_mapper.Map<List<ToDoDto>>(todos));
         }
@@ -81,13 +69,13 @@ public class TodoService : ITodoService
     {
         try
         {
-            var todos = await _toDoRepository
-                .Where(x => (string.IsNullOrWhiteSpace(query.Search) || x.Title.Contains(query.Search))
-                && (query.Status == null || x.Status.Equals(query.Status)))
-                .Page(query.PageIndex, query.PageSize)
-                .OrderByDescending(x => x.CreateDate)
-                .ToListAsync();
-
+            using var unit = _sugarUnit.CreateContext();
+            var todos = await unit.ToDos.GetPageListAsync(
+                x => (string.IsNullOrWhiteSpace(query.Search) || x.Title.Contains(query.Search)) &&
+                (query.Status == null || x.Status.Equals(query.Status)),
+              new PageModel { PageIndex = query.PageIndex, PageSize = query.PageSize },
+              x => x.CreateDate, OrderByType.Desc);
+            unit.Commit();
             return Result.Ok(_mapper.Map<List<ToDoDto>>(todos));
         }
         catch (Exception ex)
@@ -100,8 +88,9 @@ public class TodoService : ITodoService
     {
         try
         {
-            var todo = await _toDoRepository.GetAsync(id);
-
+            using var unit = _sugarUnit.CreateContext();
+            var todo = await unit.ToDos.GetByIdAsync(id);
+            unit.Commit();
             return Result.Ok(_mapper.Map<ToDoDto>(todo));
         }
         catch (Exception ex)
@@ -114,10 +103,12 @@ public class TodoService : ITodoService
     {
         try
         {
+            using var unit = _sugarUnit.CreateContext();
             //待办事项结果
-            var todos = await _toDoRepository.Select.OrderByDescending(x => x.CreateDate).ToListAsync();
+            var todos = (await unit.ToDos.GetListAsync()).OrderByDescending(x => x.CreateDate).ToList();
+
             //备忘录结果
-            var memos = await _memoRepository.Select.OrderByDescending(x => x.CreateDate).ToListAsync();
+            var memos = (await unit.Memos.GetListAsync()).OrderByDescending(x => x.CreateDate).ToList();
             SummaryDto summary = new()
             {
                 Sum = todos.Count, //汇总待办事项数量
@@ -127,6 +118,7 @@ public class TodoService : ITodoService
             summary.MemoeCount = memos.Count;  //汇总备忘录数量
             summary.ToDoList = new ObservableCollection<ToDoDto>(_mapper.Map<List<ToDoDto>>(todos.Where(t => t.Status == 0)));
             summary.MemoList = new ObservableCollection<MemoDto>(_mapper.Map<List<MemoDto>>(memos));
+            unit.Commit();
             return Result.Ok(summary);
         }
         catch (Exception ex)
@@ -137,15 +129,15 @@ public class TodoService : ITodoService
 
     public async Task<Result<ToDoDto>> UpdateAsync(ToDo model)
     {
-        using IUnitOfWork unit = _unitOfWorkManager.Begin();
         try
         {
-            var todo = await _toDoRepository.Where(x => x.Id.Equals(model.Id)).FirstAsync();
+            using var unit = _sugarUnit.CreateContext();
+            var todo = await unit.ToDos.GetFirstAsync(x => x.Id.Equals(model.Id));
             todo.Title = model.Title;
             todo.Content = model.Content;
             todo.UpdateDate = DateTime.Now;
             todo.Status = model.Status;
-            await _toDoRepository.UpdateAsync(todo);
+            await unit.ToDos.UpdateAsync(todo);
             unit.Commit();
             return Result.Ok(_mapper.Map<ToDoDto>(todo));
         }

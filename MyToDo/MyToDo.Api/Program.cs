@@ -12,14 +12,9 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-        var connectionStr = builder.Configuration.GetConnectionString("ToDoCOnnections");
-        var freeSql = new FreeSqlBuilder()
-            .UseConnectionString(DataType.Sqlite, connectionStr)
-            .UseAutoSyncStructure(true)
-            .Build();
-        builder.Services.AddSingleton(freeSql);
-        builder.Services.AddScoped<UnitOfWorkManager>();
-        builder.Services.AddFreeRepository(null, Assembly.GetCallingAssembly());
+
+        builder.Services.AddSqlsugarSetup(builder.Configuration);
+
         builder.Services.AddScoped<ITodoService, TodoService>();
         builder.Services.AddScoped<IMemoService, MemoService>();
         builder.Services.AddScoped<ILoginService, LoginService>();
@@ -48,5 +43,23 @@ public class Program
         app.MapControllers();
 
         app.Run();
+    }
+}
+
+public static class SqlsugarSetup
+{
+    public static void AddSqlsugarSetup(this IServiceCollection services, IConfiguration configuration,
+    string dbName = "ToDoCOnnections")
+    {
+        //多租户传List<ConnectionConfig>
+        SqlSugarScope sqlSugar = new SqlSugarScope(new ConnectionConfig()
+        {
+            DbType = SqlSugar.DbType.Sqlite,
+            ConnectionString = configuration.GetConnectionString(dbName),
+            IsAutoCloseConnection = true,
+        },
+         db => {  /***写AOP等方法***/});
+        ISugarUnitOfWork<MyDbContext> context = new SugarUnitOfWork<MyDbContext>(sqlSugar);
+        services.AddSingleton<ISugarUnitOfWork<MyDbContext>>(context);
     }
 }

@@ -1,8 +1,4 @@
-﻿using MyToDo.MVVM.Common.Drivers;
-
-using System.Net.NetworkInformation;
-
-namespace MyToDo.MVVM;
+﻿namespace MyToDo.MVVM;
 
 public class BootStarpper
 {

@@ -1,4 +1,6 @@
-﻿global using MyToDo.MVVM.Common.Models;
+﻿global using Akavache;
+
+global using MyToDo.MVVM.Common.Models;
 global using MyToDo.MVVM.Extensions;
 global using MyToDo.MVVM.ViewModels;
 
@@ -16,4 +18,3 @@ global using System.Reactive.Linq;
 global using System.Windows.Input;
 
 global using static Splat.Locator;
-global using Akavache;

@@ -1,5 +1,10 @@
 ﻿global using DynamicData;
 
+global using MaterialDesignColors;
+global using MaterialDesignColors.ColorManipulation;
+
+global using MaterialDesignThemes.Wpf;
+
 global using MyToDo.MVVM;
 global using MyToDo.MVVM.ViewModels;
 global using MyToDo.Share.ViewShare;
@@ -11,6 +16,7 @@ global using Splat;
 
 global using System;
 global using System.Linq;
+global using System.Reactive;
 global using System.Reactive.Disposables;
 global using System.Reactive.Linq;
 global using System.Windows;
@@ -23,10 +29,3 @@ global using System.Windows.Media.Imaging;
 global using System.Windows.Navigation;
 
 global using static Splat.Locator;
-
-global using MaterialDesignThemes.Wpf;
-
-global using System.Reactive;
-
-global using MaterialDesignColors;
-global using MaterialDesignColors.ColorManipulation;

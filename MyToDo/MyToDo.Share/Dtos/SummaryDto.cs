@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
 namespace MyToDo.Shared.Dtos
 {
@@ -16,7 +11,6 @@ namespace MyToDo.Shared.Dtos
         private int completedCount;
         private int memoeCount;
         private string completedRatio;
-
 
         /// <summary>
         /// 待办事项总数

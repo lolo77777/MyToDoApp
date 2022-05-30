@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-
-namespace MyToDo.Api.Controllers;
+﻿namespace MyToDo.Api.Controllers;
 
 /// <summary>
 /// 备忘录控制器

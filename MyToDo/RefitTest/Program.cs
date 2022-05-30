@@ -1,13 +1,7 @@
-﻿using Refit;
-
-using System.Text.Json;
-using MyToDo.Api.Context;
-using FluentResults;
-using MyToDo.Share;
-
-using Microsoft.AspNetCore.Mvc;
+﻿using MyToDo.Share.Parameters;
 using MyToDo.Shared.Dtos;
-using MyToDo.Share.Parameters;
+
+using Refit;
 
 namespace RefitTest;
 

@@ -1,19 +1,7 @@
-﻿using FluentResults;
-
-using Microsoft.AspNetCore.Mvc;
-
-using MyToDo.Api.Context;
-using MyToDo.Share;
-using MyToDo.Share.Parameters;
+﻿using MyToDo.Share.Parameters;
 using MyToDo.Shared.Dtos;
 
 using Refit;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RefitTest
 {

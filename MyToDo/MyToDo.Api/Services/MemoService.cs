@@ -2,23 +2,21 @@
 
 public class MemoService : IMemoService
 {
-    private readonly UnitOfWorkManager _unitOfWorkManager;
-    private readonly IBaseRepository<Memo, int> _memoRepository;
+    private readonly ISugarUnitOfWork<MyDbContext> _sugarUnit;
     private readonly IMapper _mapper;
 
-    public MemoService(UnitOfWorkManager unitOfWorkManager, IBaseRepository<Memo, int> memoRepository, IMapper mapper)
+    public MemoService(ISugarUnitOfWork<MyDbContext> sugarUnit, IMapper mapper)
     {
-        _unitOfWorkManager = unitOfWorkManager;
-        _memoRepository = memoRepository;
+        _sugarUnit = sugarUnit;
         _mapper = mapper;
     }
 
     public async Task<Result> AddAsync(Memo model)
     {
-        using IUnitOfWork unit = _unitOfWorkManager.Begin();
         try
         {
-            await _memoRepository.InsertAsync(model);
+            using var unit = _sugarUnit.CreateContext();
+            await unit.Memos.InsertAsync(model);
             unit.Commit();
             return Result.Ok();
         }
@@ -30,10 +28,10 @@ public class MemoService : IMemoService
 
     public async Task<Result> DeleteAsync(int id)
     {
-        using IUnitOfWork unit = _unitOfWorkManager.Begin();
         try
         {
-            await _memoRepository.DeleteAsync(id);
+            using var unit = _sugarUnit.CreateContext();
+            await unit.Memos.DeleteByIdAsync(id);
             unit.Commit();
             return Result.Ok();
         }
@@ -47,11 +45,12 @@ public class MemoService : IMemoService
     {
         try
         {
-            var memos = await _memoRepository
-                .Where(x => string.IsNullOrWhiteSpace(query.Search) || x.Title.Contains(query.Search))
-                .Page(query.PageIndex, query.PageSize)
-                .OrderByDescending(x => x.CreateDate)
-                .ToListAsync();
+            var unit = _sugarUnit.CreateContext();
+            var memos = await unit.Memos.GetPageListAsync(
+                x => string.IsNullOrWhiteSpace(query.Search) || x.Title.Contains(query.Search),
+                new PageModel { PageIndex = query.PageIndex, PageSize = query.PageSize },
+                x => x.CreateDate, OrderByType.Desc);
+            unit.Commit();
             return Result.Ok(_mapper.Map<List<MemoDto>>(memos));
         }
         catch (Exception ex)
@@ -64,8 +63,9 @@ public class MemoService : IMemoService
     {
         try
         {
-            var memo = await _memoRepository.GetAsync(id);
-
+            using var unit = _sugarUnit.CreateContext();
+            var memo = await unit.Memos.GetByIdAsync(id);
+            unit.Commit();
             return Result.Ok(_mapper.Map<MemoDto>(memo));
         }
         catch (Exception ex)
@@ -76,14 +76,14 @@ public class MemoService : IMemoService
 
     public async Task<Result<MemoDto>> UpdateAsync(Memo model)
     {
-        using IUnitOfWork unit = _unitOfWorkManager.Begin();
         try
         {
-            var memo = await _memoRepository.Where(x => x.Id.Equals(model.Id)).FirstAsync();
+            using var unit = _sugarUnit.CreateContext();
+            var memo = await unit.Memos.GetFirstAsync(x => x.Id.Equals(model.Id));
             memo.Title = model.Title;
             memo.Content = model.Content;
             memo.UpdateDate = DateTime.Now;
-            await _memoRepository.UpdateAsync(memo);
+            await unit.Memos.UpdateAsync(memo);
             unit.Commit();
             return Result.Ok(_mapper.Map<MemoDto>(memo));
         }

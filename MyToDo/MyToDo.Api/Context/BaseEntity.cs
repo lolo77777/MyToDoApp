@@ -1,15 +1,11 @@
-﻿using FreeSql.DataAnnotations;
-
-namespace MyToDo.Api.Context;
+﻿namespace MyToDo.Api.Context;
 
 public class BaseEntity
 {
-    [Column(IsIdentity = true)]
+    [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
     public int Id { get; set; }
 
-    [Column(ServerTime = DateTimeKind.Local)]
     public DateTime CreateDate { get; set; }
 
-    [Column(ServerTime = DateTimeKind.Local)]
     public DateTime UpdateDate { get; set; }
 }

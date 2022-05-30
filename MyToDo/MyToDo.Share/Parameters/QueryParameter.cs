@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MyToDo.Share.Parameters;
+﻿namespace MyToDo.Share.Parameters;
 
 public class QueryParameter
 {
