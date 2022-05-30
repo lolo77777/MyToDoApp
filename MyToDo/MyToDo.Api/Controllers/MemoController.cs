@@ -44,7 +44,7 @@ public class MemoController : ControllerBase
         var ret = await service.AddAsync(model);
         if (ret.IsSuccess)
         {
-            return NoContent();
+            return CreatedAtRoute(nameof(GetMemo), new { memoId = model.Id }, model);
         }
         return BadRequest(ret.Errors.FirstOrDefault()?.Message);
     }
@@ -53,10 +53,12 @@ public class MemoController : ControllerBase
     public async Task<ActionResult<MemoDto>> UpdateMemo([FromBody] Memo model)
     {
         var ret = await service.UpdateAsync(model);
+
         if (ret.IsSuccess)
         {
-            return NoContent();
+            return CreatedAtRoute(nameof(GetMemo), new { memoId = model.Id }, model);
         }
+
         return BadRequest();
     }
 

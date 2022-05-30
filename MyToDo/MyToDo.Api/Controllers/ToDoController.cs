@@ -53,7 +53,7 @@ public class ToDoController : ControllerBase
         var ret = await service.AddAsync(model);
         if (ret.IsSuccess)
         {
-            return NoContent();
+            return CreatedAtRoute(nameof(GetTodo), new { todoId = model.Id }, model);
         }
         return BadRequest();
     }
@@ -64,7 +64,7 @@ public class ToDoController : ControllerBase
         var ret = await service.UpdateAsync(model);
         if (ret.IsSuccess)
         {
-            return NoContent();
+            return CreatedAtRoute(nameof(GetTodo), new { todoId = model.Id }, model);
         }
         return BadRequest();
     }

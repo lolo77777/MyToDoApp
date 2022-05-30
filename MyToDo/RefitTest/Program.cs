@@ -7,6 +7,7 @@ using MyToDo.Share;
 
 using Microsoft.AspNetCore.Mvc;
 using MyToDo.Shared.Dtos;
+using MyToDo.Share.Parameters;
 
 namespace RefitTest;
 
@@ -17,6 +18,7 @@ internal class Program
         var gitHubApi = RestService.For<IMemoApi>("https://localhost:5001/api");
 
         var reApiResGet = await gitHubApi.GetMemo(1);
+        var reApiResGet2 = await gitHubApi.GetMemos(new QueryParameter { PageIndex = 0, PageSize = 10, Search = null });
         if (reApiResGet.IsSuccessStatusCode)
         {
         }
