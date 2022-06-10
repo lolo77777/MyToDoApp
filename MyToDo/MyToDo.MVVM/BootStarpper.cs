@@ -12,7 +12,7 @@ public class BootStarpper
     private static void ConfigerRegister()
     {
         SplatRegistrations.SetupIOC();
-        string ApiUrl = "https://localhost:5063/api";
+        string ApiUrl = "http://localhost:5063/api";
         SplatRegistrations.RegisterConstant<IToDoApi>(RestService.For<IToDoApi>(ApiUrl));
         SplatRegistrations.RegisterConstant<IMemoApi>(RestService.For<IMemoApi>(ApiUrl));
         SplatRegistrations.RegisterConstant<ILoginApi>(RestService.For<ILoginApi>(ApiUrl));

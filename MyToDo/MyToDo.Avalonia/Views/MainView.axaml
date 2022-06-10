@@ -51,7 +51,7 @@
 	</Window.Styles>-->
 	<!--<dialogHost:DialogHost Identifier="MainDialogHost">
 	</dialogHost:DialogHost>-->
-	<materialDesign:NavigationDrawer Name="naviDrawer" LeftDrawerOpened="{Binding ElementName=NavDrawerSwitch, Path=IsChecked, Mode=TwoWay}">
+	<materialDesign:NavigationDrawer x:Name="naviDrawer" LeftDrawerOpened="{Binding ElementName=NavDrawerSwitch, Path=IsChecked, Mode=TwoWay}">
 		<materialDesign:NavigationDrawer.LeftDrawerContent>
 			<DockPanel LastChildFill="True">
 				<StackPanel Margin="0,20" DockPanel.Dock="Top">
@@ -72,7 +72,7 @@
 						Text="洛洛" />
 				</StackPanel>
 				<ListBox
-					Name="menuItems"
+					x:Name="menuItems"
 					SelectionMode="Single"
 
 					DockPanel.Dock="Bottom">
@@ -110,6 +110,7 @@
 				<RowDefinition Height="*" />
 			</Grid.RowDefinitions>
 			<materialDesign:ColorZone
+				Name="title"
 				Background="{DynamicResource PrimaryHueMidBrush}"
 				Padding="7"
 				DoubleTapped="OnButtonMaxClick"
@@ -117,20 +118,20 @@
 				<DockPanel  LastChildFill="True">
 					<StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
 						<Button
-							Name="btnMin"
+							x:Name="btnMin"
 							FontSize="32"
 							Content="—"
 							Classes="Flat"
 
 							Click="OnButtonMinClick" />
 						<Button
-							Name="btnMax"
+							x:Name="btnMax"
 							FontSize="32"
 							Content="☐"
 							Classes="Flat"
 							Click="OnButtonMaxClick" />
 						<Button
-							Name="btnClose"
+							x:Name="btnClose"
 							FontSize="32"
 							Content="✕"
 							Classes="Flat"
@@ -186,7 +187,7 @@
 				</DockPanel>
 			</materialDesign:ColorZone>
 			<rxui:RoutedViewHost
-                    Name="mainContent"
+                    x:Name="mainContent"
                     Grid.Row="1"
                     HorizontalContentAlignment="Stretch"
                     VerticalContentAlignment="Stretch" />

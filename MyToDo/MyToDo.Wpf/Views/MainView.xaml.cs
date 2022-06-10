@@ -18,11 +18,10 @@ public partial class MainView
             btnMax.Click += (s, e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
             titleBar.MouseDoubleClick += (s, e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
             menuItems.SelectionChanged += (s, e) => drawHost.IsLeftDrawerOpen = false;
-            this.Events().MouseMove
+            titleBar.Events().MouseMove
                 .Where(e => e.LeftButton == MouseButtonState.Pressed)
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(_ => DragMove());
-
             this.OneWayBind(ViewModel, vm => vm.MenubarItems, v => v.menuItems.ItemsSource).DisposeWith(d);
             this.OneWayBind(ViewModel, vm => vm.Router, v => v.mainContent.Router).DisposeWith(d);
             this.Bind(ViewModel, vm => vm.MenuBarSelectItem, v => v.menuItems.SelectedItem).DisposeWith(d);
