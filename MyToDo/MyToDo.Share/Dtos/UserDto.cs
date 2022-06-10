@@ -1,4 +1,4 @@
-﻿namespace MyToDo.Shared.Dtos
+﻿namespace MyToDo.Share.Dtos
 {
     public class UserDto : BaseDto
     {

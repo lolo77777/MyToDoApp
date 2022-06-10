@@ -1,4 +1,4 @@
-﻿namespace MyToDo.Shared.Dtos
+﻿namespace MyToDo.Share.Dtos
 {
     /// <summary>
     /// 待办事项数据实体

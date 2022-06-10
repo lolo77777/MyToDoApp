@@ -26,7 +26,7 @@ public class ToDoController : ControllerBase
     }
 
     [HttpGet(Name = nameof(GetTodos))]
-    public async Task<ActionResult<List<ToDoDto>>> GetTodos([FromQuery] QueryParameter param)
+    public async Task<ActionResult<List<ToDoDto>>> GetTodos([FromQuery] ToDoParameter param)
     {
         var ret = await service.GetAllAsync(param);
         if (ret.IsSuccess)

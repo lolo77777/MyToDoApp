@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace MyToDo.Shared
+namespace MyToDo.Share
 {
     public static class StringExtensions
     {

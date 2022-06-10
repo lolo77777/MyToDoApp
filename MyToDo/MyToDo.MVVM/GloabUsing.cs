@@ -18,3 +18,7 @@ global using System.Reactive.Linq;
 global using System.Windows.Input;
 
 global using static Splat.Locator;
+global using Refit;
+global using MyToDo.Share.Parameters;
+global using MyToDo.Share.Dtos;
+global using MyToDo.MVVM.Services;

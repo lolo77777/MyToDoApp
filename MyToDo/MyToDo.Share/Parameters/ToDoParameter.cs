@@ -1,4 +1,4 @@
-﻿namespace MyToDo.Shared.Parameters;
+﻿namespace MyToDo.Share.Parameters;
 
 public class ToDoParameter : QueryParameter
 {

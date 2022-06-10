@@ -1,4 +1,6 @@
-﻿namespace MyToDo.MVVM;
+﻿using MyToDo.MVVM.Services;
+
+namespace MyToDo.MVVM;
 
 public class BootStarpper
 {
@@ -10,6 +12,10 @@ public class BootStarpper
     private static void ConfigerRegister()
     {
         SplatRegistrations.SetupIOC();
+        string ApiUrl = "https://localhost:5063/api";
+        SplatRegistrations.RegisterConstant<IToDoApi>(RestService.For<IToDoApi>(ApiUrl));
+        SplatRegistrations.RegisterConstant<IMemoApi>(RestService.For<IMemoApi>(ApiUrl));
+        SplatRegistrations.RegisterConstant<ILoginApi>(RestService.For<ILoginApi>(ApiUrl));
         SplatRegistrations.RegisterConstant<IScreen>(RxApp.SuspensionHost.GetAppState<MainViewModel>(), "MainContent");
         SettingViewModel settingVM = new();
         SplatRegistrations.RegisterConstant<IScreen>(settingVM, "SettingContent");

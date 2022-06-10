@@ -1,5 +1,5 @@
 ﻿using MyToDo.Share.Parameters;
-using MyToDo.Shared.Dtos;
+using MyToDo.Share.Dtos;
 
 using Refit;
 
@@ -9,14 +9,14 @@ internal class Program
 {
     private static async Task Main(string[] args)
     {
-        var gitHubApi = RestService.For<IMemoApi>("https://localhost:5001/api");
+        var memoApi = RestService.For<IMemoApi>("https://localhost:5001/api");
 
-        var reApiResGet = await gitHubApi.GetMemo(1);
-        var reApiResGet2 = await gitHubApi.GetMemos(new QueryParameter { PageIndex = 0, PageSize = 10, Search = null });
+        var reApiResGet = await memoApi.GetMemo(1);
+        var reApiResGet2 = await memoApi.GetMemos(new QueryParameter { PageIndex = 0, PageSize = 10, Search = null });
         if (reApiResGet.IsSuccessStatusCode)
         {
         }
         var memodto = new MemoDto { Content = "refitAdd", Title = "refitAdd" };
-        var reApiRes = await gitHubApi.AddMemo(memodto);
+        var reApiRes = await memoApi.AddMemo(memodto);
     }
 }

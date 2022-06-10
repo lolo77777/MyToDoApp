@@ -11,10 +11,13 @@
     <PackageReference Include="MaterialDesignThemes" Version="4.5.0" />
     <PackageReference Include="ReactiveUI" Version="18.0.10" />
     <PackageReference Include="ReactiveUI.Fody" Version="18.0.10" />
+    <PackageReference Include="Refit" Version="6.3.2" />
     <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="1.1.33">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+
+  <Import Project="..\MyToDo.Share\MyToDo.Share.projitems" Label="Shared" />
 
 </Project>

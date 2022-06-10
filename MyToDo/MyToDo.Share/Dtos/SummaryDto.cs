@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace MyToDo.Shared.Dtos
+namespace MyToDo.Share.Dtos
 {
     /// <summary>
     /// 汇总

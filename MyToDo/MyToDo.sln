@@ -54,6 +54,7 @@ Global
 		MyToDo.ViewShare\MyToDo.ViewShare.projitems*{094a128b-bb72-49b9-bd62-cdac0d561f9a}*SharedItemsImports = 5
 		MyToDo.ViewShare\MyToDo.ViewShare.projitems*{95eb318e-afa8-41ce-ab16-e7d99b6c60bd}*SharedItemsImports = 13
 		MyToDo.Share\MyToDo.Share.projitems*{b0d8cf28-ebad-49eb-b50e-b8dc50d8a8b7}*SharedItemsImports = 13
+		MyToDo.Share\MyToDo.Share.projitems*{b9bf4e4c-7486-4a78-9caa-1643c9d2d359}*SharedItemsImports = 5
 		MyToDo.ViewShare\MyToDo.ViewShare.projitems*{bef0b9fe-810d-43a6-ba63-613feaca10af}*SharedItemsImports = 5
 		MyToDo.Share\MyToDo.Share.projitems*{d8d768e4-1398-4352-b4a4-5c435fa28237}*SharedItemsImports = 5
 	EndGlobalSection

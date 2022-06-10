@@ -1,24 +1,23 @@
-﻿namespace MyToDo.Shared.Dtos
+﻿namespace MyToDo.Share.Dtos;
+
+/// <summary>
+/// 备忘录数据实体
+/// </summary>
+public class MemoDto : BaseDto
 {
-    /// <summary>
-    /// 备忘录数据实体
-    /// </summary>
-    public class MemoDto : BaseDto
+    private string title;
+    private string content;
+    private int status;
+
+    public string Title
     {
-        private string title;
-        private string content;
-        private int status;
+        get { return title; }
+        set { title = value; OnPropertyChanged(); }
+    }
 
-        public string Title
-        {
-            get { return title; }
-            set { title = value; OnPropertyChanged(); }
-        }
-
-        public string Content
-        {
-            get { return content; }
-            set { content = value; OnPropertyChanged(); }
-        }
+    public string Content
+    {
+        get { return content; }
+        set { content = value; OnPropertyChanged(); }
     }
 }

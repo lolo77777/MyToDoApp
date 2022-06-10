@@ -20,6 +20,7 @@ public partial class MainView
             menuItems.SelectionChanged += (s, e) => drawHost.IsLeftDrawerOpen = false;
             this.Events().MouseMove
                 .Where(e => e.LeftButton == MouseButtonState.Pressed)
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(_ => DragMove());
 
             this.OneWayBind(ViewModel, vm => vm.MenubarItems, v => v.menuItems.ItemsSource).DisposeWith(d);

@@ -1,37 +1,36 @@
-﻿namespace MyToDo.Shared.Dtos
+﻿namespace MyToDo.Share.Dtos;
+
+public class ResgiterUserDto : BaseDto
 {
-    public class ResgiterUserDto : BaseDto
+    private string userName;
+
+    public string UserName
     {
-        private string userName;
+        get { return userName; }
+        set { userName = value; OnPropertyChanged(); }
+    }
 
-        public string UserName
-        {
-            get { return userName; }
-            set { userName = value; OnPropertyChanged(); }
-        }
+    private string account;
 
-        private string account;
+    public string Account
+    {
+        get { return account; }
+        set { account = value; OnPropertyChanged(); }
+    }
 
-        public string Account
-        {
-            get { return account; }
-            set { account = value; OnPropertyChanged(); }
-        }
+    private string passWord;
 
-        private string passWord;
+    public string PassWord
+    {
+        get { return passWord; }
+        set { passWord = value; OnPropertyChanged(); }
+    }
 
-        public string PassWord
-        {
-            get { return passWord; }
-            set { passWord = value; OnPropertyChanged(); }
-        }
+    private string newpassWord;
 
-        private string newpassWord;
-
-        public string NewPassWord
-        {
-            get { return newpassWord; }
-            set { newpassWord = value; OnPropertyChanged(); }
-        }
+    public string NewPassWord
+    {
+        get { return newpassWord; }
+        set { newpassWord = value; OnPropertyChanged(); }
     }
 }

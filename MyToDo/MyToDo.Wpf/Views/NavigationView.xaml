@@ -6,10 +6,10 @@
     xmlns:local="clr-namespace:MyToDo.Wpf.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rxui="http://reactiveui.net"
-    xmlns:viewmodels="clr-namespace:MyToDo.MVVM.ViewModels"
+    xmlns:viewModels="clr-namespace:MyToDo.MVVM.ViewModels;assembly=MyToDo.MVVM"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    x:TypeArguments="viewmodels:NavigationViewModel"
+    x:TypeArguments="viewModels:NavigationViewModel"
     mc:Ignorable="d">
     <Grid />
 </rxui:ReactiveUserControl>
