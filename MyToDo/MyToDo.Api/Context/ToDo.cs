@@ -7,4 +7,5 @@ public class ToDo : BaseEntity
     public string Content { get; set; }
 
     public int Status { get; set; }
+    public string TestMigrationContent { get; set; }
 }

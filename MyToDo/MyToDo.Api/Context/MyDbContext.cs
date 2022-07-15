@@ -13,11 +13,11 @@ public class MyDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ToDo>()
-            .ToTable("ToDo");
-        modelBuilder.Entity<Memo>()
-            .ToTable("Memo");
-        modelBuilder.Entity<User>()
-            .ToTable("User");
+        //modelBuilder.Entity<ToDo>()
+        //    .ToTable("ToDo");
+        //modelBuilder.Entity<Memo>()
+        //    .ToTable("Memo");
+        //modelBuilder.Entity<User>()
+        //    .ToTable("User");
     }
 }
