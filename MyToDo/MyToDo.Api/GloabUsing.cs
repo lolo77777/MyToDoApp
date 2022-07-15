@@ -9,10 +9,11 @@ global using MyToDo.Api.Services;
 global using MyToDo.Share.Parameters;
 global using MyToDo.Share;
 global using MyToDo.Share.Dtos;
+
 global using MyToDo.Share.Parameters;
 
-global using SqlSugar;
-
+global using Microsoft.EntityFrameworkCore.Sqlite;
+global using Microsoft.EntityFrameworkCore;
 global using System;
 global using System.Collections.Generic;
 global using System.Linq;

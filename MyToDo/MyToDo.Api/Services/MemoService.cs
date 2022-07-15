@@ -2,12 +2,12 @@
 
 public class MemoService : IMemoService
 {
-    private readonly ISugarUnitOfWork<MyDbContext> _sugarUnit;
+    private readonly MyDbContext _dbContext;
     private readonly IMapper _mapper;
 
-    public MemoService(ISugarUnitOfWork<MyDbContext> sugarUnit, IMapper mapper)
+    public MemoService(MyDbContext dbContext, IMapper mapper)
     {
-        _sugarUnit = sugarUnit;
+        _dbContext = dbContext;
         _mapper = mapper;
     }
 
@@ -15,10 +15,13 @@ public class MemoService : IMemoService
     {
         try
         {
-            using var unit = _sugarUnit.CreateContext();
-            await unit.Memos.InsertAsync(model);
-            unit.Commit();
-            return Result.Ok();
+            await _dbContext.Memos.AddAsync(model);
+            var re = _dbContext.SaveChanges();
+            if (re > 0)
+            {
+                return Result.Ok();
+            }
+            return Result.Fail("添加memo失败");
         }
         catch (Exception ex)
         {
@@ -30,10 +33,14 @@ public class MemoService : IMemoService
     {
         try
         {
-            using var unit = _sugarUnit.CreateContext();
-            await unit.Memos.DeleteByIdAsync(id);
-            unit.Commit();
-            return Result.Ok();
+            var model = await _dbContext.Memos.SingleAsync(x => x.Id == id);
+            _dbContext.Memos.Remove(model);
+            var re = _dbContext.SaveChanges();
+            if (re > 0)
+            {
+                return Result.Ok();
+            }
+            return Result.Fail("删除memo失败");
         }
         catch (Exception ex)
         {
@@ -45,12 +52,13 @@ public class MemoService : IMemoService
     {
         try
         {
-            var unit = _sugarUnit.CreateContext();
-            var memos = await unit.Memos.GetPageListAsync(
-                x => string.IsNullOrWhiteSpace(query.Search) || x.Title.Contains(query.Search),
-                new PageModel { PageIndex = query.PageIndex, PageSize = query.PageSize },
-                x => x.CreateDate, OrderByType.Desc);
-            unit.Commit();
+            var memos = await _dbContext.Memos
+                .OrderByDescending(x => x.CreateDate)
+                .ThenBy(x => x.Id)
+                .Where(x => string.IsNullOrWhiteSpace(query.Search) || x.Title.Contains(query.Search))
+                .Skip(query.PageIndex * query.PageSize)
+                .Take(query.PageSize)
+                .ToListAsync();
             return Result.Ok(_mapper.Map<List<MemoDto>>(memos));
         }
         catch (Exception ex)
@@ -63,9 +71,8 @@ public class MemoService : IMemoService
     {
         try
         {
-            using var unit = _sugarUnit.CreateContext();
-            var memo = await unit.Memos.GetByIdAsync(id);
-            unit.Commit();
+            var memo = await _dbContext.Memos.SingleAsync(x => x.Id == id);
+
             return Result.Ok(_mapper.Map<MemoDto>(memo));
         }
         catch (Exception ex)
@@ -78,14 +85,22 @@ public class MemoService : IMemoService
     {
         try
         {
-            using var unit = _sugarUnit.CreateContext();
-            var memo = await unit.Memos.GetFirstAsync(x => x.Id.Equals(model.Id));
-            memo.Title = model.Title;
-            memo.Content = model.Content;
-            memo.UpdateDate = DateTime.Now;
-            await unit.Memos.UpdateAsync(memo);
-            unit.Commit();
-            return Result.Ok(_mapper.Map<MemoDto>(memo));
+            var trackedMemo = await _dbContext.Memos.FindAsync(model.Id);
+            if (trackedMemo != null)
+            {
+                _dbContext.Entry(trackedMemo).CurrentValues.SetValues(model);
+                _dbContext.ChangeTracker.DetectChanges();
+                Console.WriteLine("更新Memo:");
+                Console.WriteLine(_dbContext.ChangeTracker.DebugView.LongView);
+                Console.WriteLine("______________________________________");
+                var re = await _dbContext.SaveChangesAsync();
+                if (re > 0)
+                {
+                    return Result.Ok(_mapper.Map<MemoDto>(model));
+                }
+            }
+
+            return Result.Fail("更新memo数据失败");
         }
         catch (Exception ex)
         {

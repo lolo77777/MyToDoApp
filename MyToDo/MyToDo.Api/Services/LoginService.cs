@@ -2,12 +2,12 @@
 
 public class LoginService : ILoginService
 {
-    private readonly ISugarUnitOfWork<MyDbContext> _sugarUnit;
+    private readonly MyDbContext _dbContext;
     private readonly IMapper _mapper;
 
-    public LoginService(ISugarUnitOfWork<MyDbContext> sugarUnit, IMapper mapper)
+    public LoginService(MyDbContext dbContext, IMapper mapper)
     {
-        _sugarUnit = sugarUnit;
+        _dbContext = dbContext;
         _mapper = mapper;
     }
 
@@ -15,9 +15,8 @@ public class LoginService : ILoginService
     {
         try
         {
-            using var unit = _sugarUnit.CreateContext();
             Password = Password.GetMD5();
-            var model = await unit.Users.GetFirstAsync(x => x.Account.Equals(Account) && x.PassWord.Equals(Password));
+            var model = await _dbContext.Users.FirstAsync(x => x.Account.Equals(Account) && x.PassWord.Equals(Password));
             if (model == null)
                 return Result.Fail<UserDto>("账号或密码错误,请重试！");
 
@@ -27,7 +26,7 @@ public class LoginService : ILoginService
                 UserName = model.UserName,
                 Id = model.Id
             };
-            unit.Commit();
+
             return Result.Ok(userDto);
         }
         catch (Exception ex)
@@ -40,17 +39,19 @@ public class LoginService : ILoginService
     {
         try
         {
-            using var unit = _sugarUnit.CreateContext();
-
             var model = _mapper.Map<User>(user);
-            var userModel = await unit.Users.GetFirstAsync(x => x.Account.Equals(model.Account));
+            var userModel = await _dbContext.Users.FirstAsync(x => x.Account.Equals(model.Account));
             if (userModel != null)
                 return Result.Fail($"当前账号:{model.Account}已存在,请重新注册！");
             model.CreateDate = DateTime.Now;
             model.PassWord = model.PassWord.GetMD5();
-            await unit.Users.InsertAsync(model);
-            unit.Commit();
-            return Result.Ok();
+            await _dbContext.Users.AddAsync(model);
+            var re = _dbContext.SaveChanges();
+            if (re > 0)
+            {
+                return Result.Ok();
+            }
+            return Result.Fail("注册账号失败！");
         }
         catch (Exception ex)
         {

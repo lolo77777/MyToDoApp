@@ -12,8 +12,8 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-
-        builder.Services.AddSqlsugarSetup(builder.Configuration);
+        builder.Services.AddDbContext<MyDbContext>(option =>
+        option.UseSqlite(builder.Configuration.GetConnectionString("ToDoCOnnections")));
 
         builder.Services.AddScoped<ITodoService, TodoService>();
         builder.Services.AddScoped<IMemoService, MemoService>();
@@ -43,23 +43,5 @@ public class Program
         app.MapControllers();
 
         app.Run();
-    }
-}
-
-public static class SqlsugarSetup
-{
-    public static void AddSqlsugarSetup(this IServiceCollection services, IConfiguration configuration,
-    string dbName = "ToDoCOnnections")
-    {
-        //多租户传List<ConnectionConfig>
-        SqlSugarScope sqlSugar = new SqlSugarScope(new ConnectionConfig()
-        {
-            DbType = SqlSugar.DbType.Sqlite,
-            ConnectionString = configuration.GetConnectionString(dbName),
-            IsAutoCloseConnection = true,
-        },
-         db => {  /***写AOP等方法***/});
-        ISugarUnitOfWork<MyDbContext> context = new SugarUnitOfWork<MyDbContext>(sqlSugar);
-        services.AddSingleton<ISugarUnitOfWork<MyDbContext>>(context);
     }
 }

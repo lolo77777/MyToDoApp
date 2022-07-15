@@ -4,12 +4,12 @@ namespace MyToDo.Api.Services;
 
 public class TodoService : ITodoService
 {
-    private readonly ISugarUnitOfWork<MyDbContext> _sugarUnit;
+    private readonly MyDbContext _dbContext;
     private readonly IMapper _mapper;
 
-    public TodoService(ISugarUnitOfWork<MyDbContext> sugarUnit, IMapper mapper)
+    public TodoService(MyDbContext dbContext, IMapper mapper)
     {
-        _sugarUnit = sugarUnit;
+        _dbContext = dbContext;
         _mapper = mapper;
     }
 
@@ -17,14 +17,13 @@ public class TodoService : ITodoService
     {
         try
         {
-            using var unit = _sugarUnit.CreateContext();
-            await unit.ToDos.InsertAsync(model);
-            var re = unit.Commit();
-            if (!re)
+            await _dbContext.ToDos.AddAsync(model);
+            var re = _dbContext.SaveChanges();
+            if (re > 0)
             {
-                return Result.Fail("添加todo数据失败");
+                return Result.Ok();
             }
-            return Result.Ok();
+            return Result.Fail("添加todo数据失败");
         }
         catch (Exception ex)
         {
@@ -36,14 +35,22 @@ public class TodoService : ITodoService
     {
         try
         {
-            using var unit = _sugarUnit.CreateContext();
-            await unit.ToDos.DeleteByIdAsync(id);
-            unit.Commit();
-            return Result.Ok();
+            var todoFind = await _dbContext.ToDos.SingleAsync(x => x.Id == id);
+            if (todoFind != null)
+            {
+                _dbContext.ToDos.Remove(todoFind);
+                var re = _dbContext.SaveChanges();
+                if (re > 0)
+                {
+                    return Result.Ok();
+                }
+                return Result.Fail("删除todo数据失败");
+            }
+            return Result.Fail("未查询到该条数据，删除todo数据失败");
         }
         catch (Exception ex)
         {
-            return Result.Fail("添加todo数据失败").WithError(ex.Message);
+            return Result.Fail("删除todo数据失败").WithError(ex.Message);
         }
     }
 
@@ -51,12 +58,14 @@ public class TodoService : ITodoService
     {
         try
         {
-            using var unit = _sugarUnit.CreateContext();
-            var todos = await unit.ToDos.GetPageListAsync(
-                x => string.IsNullOrWhiteSpace(query.Search) || x.Title.Contains(query.Search),
-              new PageModel { PageIndex = query.PageIndex, PageSize = query.PageSize },
-              x => x.CreateDate, OrderByType.Desc);
-            unit.Commit();
+            var todos = await _dbContext.ToDos
+                .OrderByDescending(x => x.CreateDate)
+                .ThenBy(x => x.Id)
+                .Where(x => string.IsNullOrWhiteSpace(query.Search) || x.Title.Contains(query.Search))
+                .Skip(query.PageIndex * query.PageSize)
+                .Take(query.PageSize)
+                .ToListAsync();
+
             return Result.Ok(_mapper.Map<List<ToDoDto>>(todos));
         }
         catch (Exception ex)
@@ -69,13 +78,14 @@ public class TodoService : ITodoService
     {
         try
         {
-            using var unit = _sugarUnit.CreateContext();
-            var todos = await unit.ToDos.GetPageListAsync(
-                x => (string.IsNullOrWhiteSpace(query.Search) || x.Title.Contains(query.Search)) &&
-                (query.Status == null || x.Status.Equals(query.Status)),
-              new PageModel { PageIndex = query.PageIndex, PageSize = query.PageSize },
-              x => x.CreateDate, OrderByType.Desc);
-            unit.Commit();
+            var todos = await _dbContext.ToDos
+                .OrderByDescending(x => x.CreateDate)
+                .ThenBy(x => x.Id)
+                .Where(x => (string.IsNullOrWhiteSpace(query.Search) || x.Title.Contains(query.Search)) &&
+                (query.Status == null || x.Status.Equals(query.Status)))
+                .Skip(query.PageIndex * query.PageSize)
+                .Take(query.PageSize)
+                .ToListAsync();
             return Result.Ok(_mapper.Map<List<ToDoDto>>(todos));
         }
         catch (Exception ex)
@@ -88,9 +98,7 @@ public class TodoService : ITodoService
     {
         try
         {
-            using var unit = _sugarUnit.CreateContext();
-            var todo = await unit.ToDos.GetByIdAsync(id);
-            unit.Commit();
+            var todo = await _dbContext.ToDos.SingleAsync(x => x.Id == id);
             return Result.Ok(_mapper.Map<ToDoDto>(todo));
         }
         catch (Exception ex)
@@ -103,22 +111,23 @@ public class TodoService : ITodoService
     {
         try
         {
-            using var unit = _sugarUnit.CreateContext();
             //待办事项结果
-            var todos = (await unit.ToDos.GetListAsync()).OrderByDescending(x => x.CreateDate).ToList();
+            var todosQuery = _dbContext.ToDos.OrderByDescending(x => x.CreateDate);
 
             //备忘录结果
-            var memos = (await unit.Memos.GetListAsync()).OrderByDescending(x => x.CreateDate).ToList();
+            var memosQuery = _dbContext.Memos.OrderByDescending(x => x.CreateDate);
             SummaryDto summary = new()
             {
-                Sum = todos.Count, //汇总待办事项数量
-                CompletedCount = todos.Where(t => t.Status == 1).Count() //统计完成数量
+                Sum = todosQuery.Count(), //汇总待办事项数量
+                CompletedCount = todosQuery.Where(t => t.Status == 1).Count() //统计完成数量
             };
             summary.CompletedRatio = (summary.CompletedCount / (double)summary.Sum).ToString("0%"); //统计完成率
-            summary.MemoeCount = memos.Count;  //汇总备忘录数量
-            summary.ToDoList = new ObservableCollection<ToDoDto>(_mapper.Map<List<ToDoDto>>(todos.Where(t => t.Status == 0)));
+            summary.MemoeCount = memosQuery.Count();  //汇总备忘录数量
+            var todos = await todosQuery.Where(t => t.Status == 0).ToListAsync();
+            var memos = await memosQuery.ToListAsync();
+            summary.ToDoList = new ObservableCollection<ToDoDto>(_mapper.Map<List<ToDoDto>>(todos));
             summary.MemoList = new ObservableCollection<MemoDto>(_mapper.Map<List<MemoDto>>(memos));
-            unit.Commit();
+
             return Result.Ok(summary);
         }
         catch (Exception ex)
@@ -131,19 +140,26 @@ public class TodoService : ITodoService
     {
         try
         {
-            using var unit = _sugarUnit.CreateContext();
-            var todo = await unit.ToDos.GetFirstAsync(x => x.Id.Equals(model.Id));
-            todo.Title = model.Title;
-            todo.Content = model.Content;
-            todo.UpdateDate = DateTime.Now;
-            todo.Status = model.Status;
-            await unit.ToDos.UpdateAsync(todo);
-            unit.Commit();
-            return Result.Ok(_mapper.Map<ToDoDto>(todo));
+            var trackedTodo = await _dbContext.ToDos.FindAsync(model.Id);
+            if (trackedTodo != null)
+            {
+                _dbContext.Entry(trackedTodo).CurrentValues.SetValues(model);
+                _dbContext.ChangeTracker.DetectChanges();
+                Console.WriteLine("更新Todo:");
+                Console.WriteLine(_dbContext.ChangeTracker.DebugView.LongView);
+                Console.WriteLine("______________________________________");
+                var re = await _dbContext.SaveChangesAsync();
+                if (re > 0)
+                {
+                    return Result.Ok(_mapper.Map<ToDoDto>(model));
+                }
+            }
+
+            return Result.Fail("更新todo数据失败");
         }
         catch (Exception ex)
         {
-            return Result.Fail("更新memo数据失败").WithError(ex.Message);
+            return Result.Fail("更新todo数据失败").WithError(ex.Message);
         }
     }
 }
